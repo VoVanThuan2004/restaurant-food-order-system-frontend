@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { http } from "../app/api/http";
 import type { ApiResponse } from "../types/api.response";
 import type {
@@ -111,5 +112,51 @@ export const getStaffOrdersApi = async ({
 // Lấy tổng số món ăn có trong đơn gọi món
 export const getOrderTotalItemsApi = async (orderId: string) => {
   const res = await http.get<ApiResponse>(`/orders/${orderId}/total-items`);
+  return res.data;
+};
+
+// Lấy danh sách đơn gọi món dành cho admin
+type OrderAdminProps = {
+  page: number;
+  size: number;
+  startDate?: string;
+  endDate?: string;
+  userId?: string;
+  status?: boolean;
+};
+
+export const getOrdersByAdmin = async (props: OrderAdminProps) => {
+  const { page, size, startDate, endDate, userId, status } = props;
+  const queryParams: Record<string, any> = {
+    page: page,
+    size: size,
+  };
+
+  if (startDate && endDate) {
+    queryParams.startDate = dayjs(startDate).format("YYYY-MM-DD");
+    queryParams.endDate = dayjs(endDate).format("YYYY-MM-DD");
+  }
+
+  if (userId) {
+    queryParams.userId = userId;
+  }
+
+  if (status !== undefined) {
+    queryParams.status = status;
+  }
+
+  const res = await http.get<ApiResponse<PageResponse<OrderResponse>>>(
+    `/orders/admin`,
+    {
+      params: queryParams,
+    },
+  );
+  return res.data;
+};
+
+
+// Lấy thông tin chi tiết đơn gọi món
+export const getOrderDetailAdminApi = async (orderId: string) => {
+  const res = await http.get<ApiResponse<OrderResponse>>(`/orders/${orderId}`);
   return res.data;
 };

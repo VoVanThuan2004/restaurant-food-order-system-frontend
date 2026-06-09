@@ -53,6 +53,9 @@ export type OrderResponse = {
   amountReceived: number;
   changeAmount: number;
   orderItems: OrderItem[];
+  status: boolean;
+  paymentMethod: string;
+  paidAt: string;
 };
 
 

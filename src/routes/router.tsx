@@ -12,7 +12,6 @@ import EmployeeProfileRoute from "../features/user/routes/employee-profile";
 import ChangePasswordRoute from "../features/auth/routes/change-password";
 import AdminRoute from "../routes/AdminRoute";
 import MenuRoute from "../features/employee/menu/routes/menu-route";
-import AdminOrderRoute from "../features/admin/order/routes/order-route";
 import NotFoundPage from "../pages/NotFoundPage";
 import { LoginPage } from "../pages/Auth/Login";
 import { StaffRoute } from "./StaffRoute";
@@ -32,6 +31,7 @@ import { UserPage } from "../pages/Admin/User";
 import { AdminDiningTablePage } from "../pages/Admin/DiningTable";
 import { ChefRoute } from "./ChefRoute";
 import { CartPage } from "../pages/Staff/Dish/CartPage";
+import { AdminOrderPage } from "../pages/Admin/Order";
 
 const router = createBrowserRouter([
   {
@@ -100,7 +100,7 @@ const router = createBrowserRouter([
           },
           {
             path: "order",
-            element: <AdminOrderRoute />,
+            element: <AdminOrderPage />,
           },
         ],
       },

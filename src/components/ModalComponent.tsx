@@ -1,7 +1,8 @@
 import { Modal } from 'antd';
+import type { ReactNode } from 'react';
 
 interface ModalComponentProps {
-  title: string;
+  title: string | ReactNode;
   open: boolean;
   onCancel: () => void;
   onOk: () => void;
@@ -13,6 +14,7 @@ interface ModalComponentProps {
   maskClosable?: boolean;
   destroyOnClose?: boolean;
   confirmLoading?: boolean;
+  loading?: boolean;
 }
 
 const ModalComponent = ({
@@ -28,6 +30,7 @@ const ModalComponent = ({
   maskClosable = true,
   destroyOnClose = true,
   confirmLoading,
+  loading,
   ...restProps
 }: ModalComponentProps) => {
   return (
@@ -44,6 +47,7 @@ const ModalComponent = ({
       maskClosable={maskClosable}
       destroyOnClose={destroyOnClose}
       confirmLoading={confirmLoading}
+      loading={loading}
       {...restProps}
     >
       {children}
