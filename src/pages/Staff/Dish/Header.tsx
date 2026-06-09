@@ -20,13 +20,21 @@ const Header = ({ setIsOpen }: Props) => {
     fetchTotalItems(orderId);
   }, []);
 
-  const onOpenCartDrawer = () => {
+  // const onOpenCartDrawer = () => {
+  //   if (!orderId) {
+  //     navigate("/");
+  //     return;
+  //   }
+  //   setOpenCart(true);
+  // };
+
+  const onOpenCart = () => {
     if (!orderId) {
       navigate("/");
       return;
     }
-    setOpenCart(true);
-  };
+    navigate(`/orders/${orderId}/cart`);
+  }
 
   const onCloseCartDrawer = () => {
     setOpenCart(false);
@@ -57,7 +65,7 @@ const Header = ({ setIsOpen }: Props) => {
       <div>
         <button
           className="flex items-center justify-center bg-red-500 p-3 gap-2 rounded-xl cursor-pointer hover:shadow-md transition"
-          onClick={() => onOpenCartDrawer()}
+          onClick={() => onOpenCart()}
         >
           <ShoppingCart className="text-white" size={20} />
           <p className="hidden lg:block text-white">Giỏ hàng</p>

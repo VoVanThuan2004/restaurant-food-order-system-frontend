@@ -31,6 +31,7 @@ import { StaffOrderPage } from "../pages/Staff/Order";
 import { UserPage } from "../pages/Admin/User";
 import { AdminDiningTablePage } from "../pages/Admin/DiningTable";
 import { ChefRoute } from "./ChefRoute";
+import { CartPage } from "../pages/Staff/Dish/CartPage";
 
 const router = createBrowserRouter([
   {
@@ -161,6 +162,10 @@ const router = createBrowserRouter([
       {
         path: "dish",
         element: <StaffDishPage />,
+      },
+      {
+        path: "cart",
+        element: <CartPage />,
       },
     ],
   },
