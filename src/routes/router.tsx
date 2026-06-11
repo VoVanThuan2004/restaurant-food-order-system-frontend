@@ -32,6 +32,7 @@ import { AdminDiningTablePage } from "../pages/Admin/DiningTable";
 import { ChefRoute } from "./ChefRoute";
 import { CartPage } from "../pages/Staff/Dish/CartPage";
 import { AdminOrderPage } from "../pages/Admin/Order";
+import { DashboardPage } from "../pages/Admin/Dashboard";
 
 const router = createBrowserRouter([
   {
@@ -73,7 +74,11 @@ const router = createBrowserRouter([
       {
         element: <AdminLayout />,
         children: [
-          { index: true, element: <Navigate to="category" replace /> },
+          { index: true, element: <Navigate to="dashboard" replace /> },
+          {
+            path: "dashboard",
+            element: <DashboardPage />
+          },
           {
             path: "category",
             element: <CategoryPage />,

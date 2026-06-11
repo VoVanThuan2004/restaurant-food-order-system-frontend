@@ -47,6 +47,21 @@ const ItemSideBar = () => {
       <div className="flex flex-col gap-4">
         <NavLink
           key={0}
+          to={`/admin/dashboard`}
+          className={({ isActive }) =>
+            [
+              "px-3 py-4 rounded-lg text-[16px] transition flex items-center",
+              isActive
+                ? "bg-[#1E293B] text-white font-medium"
+                : "text-gray-400 font-medium hover:bg-[#1E293B] hover:text-white",
+            ].join(" ")
+          }
+        >
+          <span>Dashboard</span>
+        </NavLink>
+
+        <NavLink
+          key={0}
           to={`/admin/category`}
           className={({ isActive }) =>
             [
