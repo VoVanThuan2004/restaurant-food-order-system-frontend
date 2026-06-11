@@ -13,6 +13,7 @@ export type OrderItemVariant = {
 
 export type OrderItem = {
   orderItemId: string;
+  dishId: string;
   dishName: string;
   dishImage: string;
   quantity: number;

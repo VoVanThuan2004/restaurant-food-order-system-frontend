@@ -101,3 +101,9 @@ export const getDishDetailApi = async (dishId: string) => {
 export const updateDishStatusApi = async (dishId: string) => {
   return (await http.put<ApiResponse>(`/dishes/${dishId}/status`)).data;
 };
+
+// Api lấy danh sách món ăn gợi ý
+export const getAllDishesRecommendApi = async (dishIds: string[]) => {
+  const res = await http.get<ApiResponse<DishResponse[]>>(`/dishes/recommend?dishIds=${dishIds}`);
+  return res.data;
+}
