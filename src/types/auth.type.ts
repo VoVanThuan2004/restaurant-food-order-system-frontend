@@ -17,7 +17,7 @@ export type LoginSuccessData = {
 };
 
 export type ChangePasswordDTO = {
-  password: string;
+  oldPassword: string;
   newPassword: string;
   confirmNewPassword: string;
 };

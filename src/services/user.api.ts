@@ -63,3 +63,35 @@ export const activeUserApi = async (userId: string) => {
   const res = await http.put<ApiResponse>(`/users/${userId}/active`);
   return res.data;
 };
+
+// Cập nhật thông tin profile user
+export const updateProfileApi = async (
+  userId: string,
+  data: {
+    fullName: string;
+    phoneNumber: string;
+    gender: number;
+    dateOfBirth: string;
+  },
+  file?: File | null
+) => {
+  const formData = new FormData();
+
+  formData.append(
+    "data",
+    new Blob([JSON.stringify(data)], {
+      type: "application/json",
+    })
+  );
+
+  if (file) {
+    formData.append("file", file);
+  }
+
+  const res = await http.put<ApiResponse>(
+    `/users/${userId}`,
+    formData
+  );
+
+  return res.data;
+};

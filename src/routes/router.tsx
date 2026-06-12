@@ -8,8 +8,6 @@ import SideBarMenu from "../features/employee/menu/components/SideBarMenu";
 import Test from "../Test";
 import { PublicRoute } from "../routes/PublicRoute";
 import { fetchAllCategories } from "../features/employee/menu/api/category.api";
-import EmployeeProfileRoute from "../features/user/routes/employee-profile";
-import ChangePasswordRoute from "../features/auth/routes/change-password";
 import AdminRoute from "../routes/AdminRoute";
 import MenuRoute from "../features/employee/menu/routes/menu-route";
 import NotFoundPage from "../pages/NotFoundPage";
@@ -33,6 +31,8 @@ import { ChefRoute } from "./ChefRoute";
 import { CartPage } from "../pages/Staff/Dish/CartPage";
 import { AdminOrderPage } from "../pages/Admin/Order";
 import { DashboardPage } from "../pages/Admin/Dashboard";
+import ProfilePage from "../pages/Profile";
+import { ChangePasswordPage } from "../pages/ChangePassword";
 
 const router = createBrowserRouter([
   {
@@ -107,6 +107,14 @@ const router = createBrowserRouter([
             path: "order",
             element: <AdminOrderPage />,
           },
+          {
+            path: "profile",
+            element: <ProfilePage />
+          },
+          {
+            path: "change-password",
+            element: <ChangePasswordPage />
+          }
         ],
       },
     ],
@@ -128,11 +136,11 @@ const router = createBrowserRouter([
           },
           {
             path: "/profile",
-            element: <EmployeeProfileRoute />,
+            element: <ProfilePage />,
           },
           {
             path: "/change-password",
-            element: <ChangePasswordRoute />,
+            element: <ChangePasswordPage />,
           },
         ],
       },
@@ -197,6 +205,14 @@ const router = createBrowserRouter([
             path: "order",
             element: <OrderChefPage />,
           },
+          {
+            path: "profile",
+            element: <ProfilePage />
+          },
+          {
+            path: "change-password",
+            element: <ChangePasswordPage />
+          }
         ],
       },
     ],
