@@ -4,6 +4,11 @@ export type RevenueStatisticResponse = {
 };
 
 export type TodayStatisticResponse = {
-    totalOrders: number;
-    totalRevenue: number;
-}
+  totalOrders: number;
+  totalRevenue: number;
+};
+
+export type TopDishesResponse = {
+  dishName: string;
+  totalQuantity: number;
+};

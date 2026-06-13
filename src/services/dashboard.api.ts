@@ -3,6 +3,7 @@ import type { ApiResponse } from "../types/api.response";
 import type {
   RevenueStatisticResponse,
   TodayStatisticResponse,
+  TopDishesResponse,
 } from "../types/dashboard.type";
 
 export const getTodayStatisticApi = async () => {
@@ -34,6 +35,31 @@ export const getRevenuStatisticApi = async ({
     {
       params: queryParams,
     },
+  );
+  return res.data;
+};
+
+export const getTopDishesApi = async ({
+  limit,
+  startDate,
+  endDate,
+}: {
+  limit?: number;
+  startDate: string;
+  endDate: string;
+}) => {
+  const queryParams: Record<string, any> = {
+    startDate,
+    endDate,
+  };
+
+  if (limit) queryParams.limit = limit;
+
+  const res = await http.get<ApiResponse<TopDishesResponse[]>>(
+    "/dashboards/top-dishes",
+    {
+      params: queryParams
+    }
   );
   return res.data;
 };

@@ -7,6 +7,8 @@ import { RevenueChart } from "./RevenueChart";
 import { useTodayStatistic } from "../../../hooks/dashboard/useTodayStatistic";
 import { useRevenueStatistic } from "../../../hooks/dashboard/useRevenueStatistic";
 import type { RevenueStatisticResponse } from "../../../types/dashboard.type";
+import { useTopDishes } from "../../../hooks/dashboard/useTopDishes";
+import TopDishesPieChart from "./TopDishesPieChart";
 
 export const DashboardPage = () => {
   const { RangePicker } = DatePicker;
@@ -31,9 +33,15 @@ export const DashboardPage = () => {
     type: groupBy,
   });
 
-  // Gọi hook api trả về top thuốc bán chạy
-//   const { data: topMedicinesData, isLoading: isLoadingTopMedicines } =
-//     useTopMedicines(startDate, endDate);
+  // Gọi hook api trả về top các món ăn bán chạy
+  const { data: topDishesData, isLoading: isLoadingTopDishes } = useTopDishes({
+    limit: 5,
+    startDate,
+    endDate,
+  });
+
+  console.log("Data: ", topDishesData);
+  
 
   const isAnyLoading = isLoading || isLoadingStats;
 
@@ -111,11 +119,14 @@ export const DashboardPage = () => {
       </div>
 
       <div className="grid grid-cols-1 gap-6">
-        <RevenueChart data={data as RevenueStatisticResponse[]} loading={isLoading || isLoadingStats} />
-        {/* <TopMedicines
-          data={topMedicinesData}
-          loading={isLoading || isLoadingTopMedicines}
-        /> */}
+        <RevenueChart
+          data={data as RevenueStatisticResponse[]}
+          loading={isLoading || isLoadingStats}
+        />
+        <TopDishesPieChart
+          data={topDishesData ?? []}
+          loading={isLoading || isLoadingTopDishes}
+        />
       </div>
     </div>
   );
