@@ -1,15 +1,10 @@
-import { createBrowserRouter, Navigate, redirect } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import AuthLayout from "../components/layouts/AuthLayout";
-import RegisterPage from "../features/auth/pages/RegisterPage";
 import MainLayout from "../components/layouts/MainLayout";
-import RecoveryPassword from "../features/auth/pages/RecoveryPassword";
 import TestPage from "../pages/TestPage";
-import SideBarMenu from "../features/employee/menu/components/SideBarMenu";
 import Test from "../Test";
 import { PublicRoute } from "../routes/PublicRoute";
-import { fetchAllCategories } from "../features/employee/menu/api/category.api";
 import AdminRoute from "../routes/AdminRoute";
-import MenuRoute from "../features/employee/menu/routes/menu-route";
 import NotFoundPage from "../pages/NotFoundPage";
 import { LoginPage } from "../pages/Auth/Login";
 import { StaffRoute } from "./StaffRoute";
@@ -49,14 +44,14 @@ const router = createBrowserRouter([
             path: "/login",
             element: <LoginPage />,
           },
-          {
-            path: "/register",
-            element: <RegisterPage />,
-          },
-          {
-            path: "/recovery-password",
-            element: <RecoveryPassword />,
-          },
+          // {
+          //   path: "/register",
+          //   element: <RegisterPage />,
+          // },
+          // {
+          //   path: "/recovery-password",
+          //   element: <RecoveryPassword />,
+          // },
           {
             path: "/test",
             element: <TestPage />,
@@ -148,25 +143,25 @@ const router = createBrowserRouter([
   },
 
   // Employee
-  {
-    element: <SideBarMenu />,
-    children: [
-      {
-        path: "/menu",
-        loader: async () => {
-          const categories = await fetchAllCategories();
-          if (categories.status === "success") {
-            return redirect(`/menu/${categories.data[0]._id}`);
-          }
-          return null;
-        },
-      },
-      {
-        path: "/menu/:categoryId",
-        element: <MenuRoute />,
-      },
-    ],
-  },
+  // {
+  //   element: <SideBarMenu />,
+  //   children: [
+  //     {
+  //       path: "/menu",
+  //       loader: async () => {
+  //         const categories = await fetchAllCategories();
+  //         if (categories.status === "success") {
+  //           return redirect(`/menu/${categories.data[0]._id}`);
+  //         }
+  //         return null;
+  //       },
+  //     },
+  //     {
+  //       path: "/menu/:categoryId",
+  //       element: <MenuRoute />,
+  //     },
+  //   ],
+  // },
 
   {
     path: "/orders/:orderId",

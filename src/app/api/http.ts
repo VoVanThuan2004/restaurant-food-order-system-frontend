@@ -1,5 +1,5 @@
 import axios from "axios";
-import { tokenStorage } from "../../features/auth/utils/tokenStorage";
+import { tokenStorage } from "../../utils/token-storage";
 import type { FailedRequest } from "../../types/failed.request";
 import { getApiError } from "../../utils/get-api-error";
 import { message } from "antd";

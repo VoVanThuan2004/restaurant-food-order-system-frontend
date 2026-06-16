@@ -1,5 +1,5 @@
 import { Navigate, Outlet } from "react-router-dom";
-import useAuthStore from "../features/auth/stores/useAuthStore";
+import useAuthStore from "../stores/useAuthStore";
 
 export const ProtectedRoute = () => {
   // Kiểm tra trạng thái login hiện tại
