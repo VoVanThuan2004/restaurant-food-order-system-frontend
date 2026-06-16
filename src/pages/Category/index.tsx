@@ -101,6 +101,7 @@ export const CategoryPage = () => {
         handleSubmit={handleSubmit}
         handleCancel={handleCancel}
         mode="add"
+        loading={mutation.isPending}
       />
 
       {/* Modal cập nhật danh mục */}
@@ -110,6 +111,7 @@ export const CategoryPage = () => {
         handleCancel={handleCancelUpdate}
         mode="update"
         categoryName={categoryNameUpdate}
+        loading={mutationUpdate.isPending}
       />
     </div>
   );
