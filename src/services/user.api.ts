@@ -88,7 +88,7 @@ export const updateProfileApi = async (
     formData.append("file", file);
   }
 
-  const res = await http.put<ApiResponse>(
+  const res = await http.put<ApiResponse<UserProfileResponse>>(
     `/users/${userId}`,
     formData
   );

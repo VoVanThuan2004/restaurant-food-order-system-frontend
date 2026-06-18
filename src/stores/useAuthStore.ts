@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { tokenStorage } from "../utils/token-storage";
 import type { LoginSuccessData } from "../types/auth.type";
 import { getUserProfileApi } from "../services/user.api";
+import type { UserStore } from "../types/user.type";
 
 interface AuthState {
   user: {
@@ -15,6 +16,7 @@ interface AuthState {
   setSession: (data: LoginSuccessData) => void;
   clearSession: () => void;
   boostrap: () => Promise<void>;
+  setUserUpdate: (user: UserStore) => void;
 }
 
 const useAuthStore = create<AuthState>((set) => ({
@@ -34,6 +36,17 @@ const useAuthStore = create<AuthState>((set) => ({
         avatarUrl: data.avatarUrl,
       },
       isAuthentication: true,
+    });
+  },
+
+  setUserUpdate: (user: UserStore) => {
+    set({
+      user: {
+        userId: user.userId,
+        fullName: user.fullName,
+        roles: user.roles,
+        avatarUrl: user.avatar,
+      },
     });
   },
 

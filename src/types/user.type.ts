@@ -4,8 +4,15 @@ export type User = {
   userId: string;
   fullName: string;
   roleName: string;
-  avatar: string;
+  avatar?: string;
 };
+
+export type UserStore = {
+  userId: string;
+  fullName: string;
+  roles: string[];
+  avatar: string;
+}
 
 export type UserProfileResponse = {
   userId: string;

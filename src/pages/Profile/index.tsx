@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { message, Spin } from "antd";
+import { message, notification, Spin } from "antd";
 import { getUserProfileApi, updateProfileApi } from "../../services/user.api";
 import { getApiError } from "../../utils/get-api-error";
+import useAuthStore from "../../stores/useAuthStore";
 
 export const ProfilePage = () => {
   const [userId, setUserId] = useState("");
@@ -18,6 +19,8 @@ export const ProfilePage = () => {
 
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
+
+  const setUserUpdate = useAuthStore((state) => state.setUserUpdate);
 
   const getRoleColor = (role: string) => {
     switch (role) {
@@ -55,7 +58,9 @@ export const ProfilePage = () => {
 
       setAvatarUrl(user?.avatarUrl || "");
 
-      setDateOfBirth(user?.dateOfBirth ? user.dateOfBirth.substring(0, 10) : "");
+      setDateOfBirth(
+        user?.dateOfBirth ? user.dateOfBirth.substring(0, 10) : "",
+      );
     } catch (error) {
       const apiError = getApiError(error);
 
@@ -98,7 +103,19 @@ export const ProfilePage = () => {
         avatarFile,
       );
 
-      message.success(res.message || "Cập nhật thông tin thành công");
+      const userUpdated = res.data;
+
+
+      // Cập nhật thông tin user toàn cục
+      setUserUpdate({
+        userId: userUpdated?.userId as string,
+        fullName: userUpdated?.fullName as string,
+        roles: userUpdated?.roles as string[],
+        avatar: userUpdated?.avatarUrl as string,
+      });
+      notification.success({
+        title: res.message || "Cập nhật thông tin thành công",
+      });
 
       await fetchProfile();
     } catch (error) {

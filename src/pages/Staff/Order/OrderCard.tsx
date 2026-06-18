@@ -2,8 +2,11 @@ import type { OrderPaymentResponse } from "../../../types/order.type";
 import { formatPrice } from "../../../utils/formatPrice";
 import { Clock, CreditCard } from "lucide-react";
 import formatDateTime from "../../../utils/formatDateTime";
+import { useState } from "react";
+import { OrderDetailModal } from "./OrderDetailModal";
 
 export const OrderCard = (order: OrderPaymentResponse) => {
+  const [isOpen, setIsOpen] = useState(false);
 
   const getPaymentMethodColor = (method: string) => {
     switch (method) {
@@ -47,9 +50,7 @@ export const OrderCard = (order: OrderPaymentResponse) => {
       {/* Tiền nhận */}
       <div className="flex items-center justify-between mt-2">
         <p className="text-gray-500 text-[16px]">Tiền nhận</p>
-        <p className="text-[17px]">
-          {formatPrice(order.amountReceived || 0)}
-        </p>
+        <p className="text-[17px]">{formatPrice(order.amountReceived || 0)}</p>
       </div>
 
       {/* Tiền thối */}
@@ -92,13 +93,17 @@ export const OrderCard = (order: OrderPaymentResponse) => {
       <div className="flex justify-center">
         <button
           className="px-20 py-3 bg-white border-[2px] border-red-6=500 rounded-xl text-red-500 text-[18px] font-semibold cursor-pointer mt-5 hover:shadow-sm"
-        //   onClick={() => setIsOpen(true)}
+          onClick={() => setIsOpen(true)}
         >
           Xem chi tiết
         </button>
       </div>
 
-      {/* <OrderDetailModal isOpen={isOpen} setIsOpen={setIsOpen} /> */}
+      <OrderDetailModal
+        orderId={order.orderId}
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+      />
     </div>
   );
 };

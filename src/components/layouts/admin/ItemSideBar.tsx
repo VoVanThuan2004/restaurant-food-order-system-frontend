@@ -142,7 +142,7 @@ const ItemSideBar = () => {
         onClick={() => onLogout()}
       >
         <LogOut color="white" />
-        <p className="text-white">Exit</p>
+        <p className="text-white">Đăng xuất</p>
       </button>
     </div>
   );
