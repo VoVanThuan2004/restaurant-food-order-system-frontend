@@ -10,18 +10,18 @@ import CTA from "./components/CTA";
 import Footer from "./components/Footer";
 
 export const LandingPage = () => {
-    return (
-        <div className="w-full">
-            <Header />
-            <Hero />
-            <FeaturedDishes />
-            <Categories />
-            <About />
-            <WhyChooseUs />
-            <Reviews />
-            <Promotions />
-            <CTA />
-            <Footer />
-        </div>
-    )
-}
+  return (
+    <div className="w-full">
+      <Header />
+      <Hero />
+      <FeaturedDishes />
+      <Categories />
+      <About />
+      <WhyChooseUs />
+      <Reviews />
+      <Promotions />
+      <CTA />
+      <Footer />
+    </div>
+  );
+};

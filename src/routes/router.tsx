@@ -142,27 +142,6 @@ const router = createBrowserRouter([
     ],
   },
 
-  // Employee
-  // {
-  //   element: <SideBarMenu />,
-  //   children: [
-  //     {
-  //       path: "/menu",
-  //       loader: async () => {
-  //         const categories = await fetchAllCategories();
-  //         if (categories.status === "success") {
-  //           return redirect(`/menu/${categories.data[0]._id}`);
-  //         }
-  //         return null;
-  //       },
-  //     },
-  //     {
-  //       path: "/menu/:categoryId",
-  //       element: <MenuRoute />,
-  //     },
-  //   ],
-  // },
-
   {
     path: "/orders/:orderId",
     element: <StaffRoute />,

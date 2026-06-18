@@ -10,8 +10,6 @@ export const StaffDishPage = () => {
 
   const categoryId = searchParams.get("category");
 
-  // Gọi api lấy 
-
   return (
     <div className="flex min-h-screen">
       {/* Desktop sidebar */}

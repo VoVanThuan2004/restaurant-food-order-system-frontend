@@ -133,7 +133,7 @@ export const CartPage = () => {
           <div className="flex items-center gap-4 mb-3">
             <button
               onClick={() => navigate(`/orders/${orderId}/dish`)}
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              className="p-2 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer"
             >
               <ArrowLeft size={24} className="text-gray-600" />
             </button>

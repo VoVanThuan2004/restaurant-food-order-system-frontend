@@ -79,7 +79,7 @@ export const CategorySidebar = () => {
         onClick={() => handleExit()}
       >
         <LogOut color="white" />
-        <p className="text-white">Exit</p>
+        <p className="text-white">Thoát</p>
       </button>
     </div>
   );

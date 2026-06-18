@@ -65,7 +65,7 @@ const Header = () => {
             />
           </svg>
           <h1 className="text-2xl font-bold text-white tracking-tight">
-            Deluxe Restaurant
+            Hadilao Restaurant
           </h1>
         </div>
 

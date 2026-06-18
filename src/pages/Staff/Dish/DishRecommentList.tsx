@@ -1,5 +1,4 @@
-import { Button, Skeleton } from "antd";
-import { formatPrice } from "../../../utils/formatPrice";
+import { Skeleton } from "antd";
 import type { OrderItem, OrderItemRequest } from "../../../types/order.type";
 import { useEffect, useState } from "react";
 import type { DishResponse } from "../../../types/dish.type";
@@ -7,6 +6,7 @@ import { getAllDishesRecommendApi } from "../../../services/dish.api";
 import { DishDetailDrawer } from "./DishDetailDrawer";
 import { useTotalItemsStore } from "../../../stores/useTotalItemsStore";
 import { useAddOrderItem } from "../../../hooks/order/useAddOrderItem";
+import formatCurrency from "../../../utils/formatCurrency";
 
 type Props = {
   orderItems: OrderItem[];
@@ -15,7 +15,7 @@ export const DishRecommendList = (props: Props) => {
   const { orderItems } = props;
   const [loading, setLoading] = useState(true);
   const [recommendDishes, setRecommendDishes] = useState<DishResponse[]>([]);
-  const [openModal, setOpenModal]  = useState(false);
+  const [openModal, setOpenModal] = useState(false);
   const [dishId, setDishId] = useState<string>();
 
   const addToOrder = useTotalItemsStore((state) => state.addToOrder);
@@ -83,25 +83,24 @@ export const DishRecommendList = (props: Props) => {
     );
   }
 
-
   const onOpenModal = (dishId: string) => {
-  if (!dishId) return;
+    if (!dishId) return;
     setDishId(dishId);
     setOpenModal(true);
-  }
+  };
 
   const onCloseModal = () => {
     setOpenModal(false);
-  }
+  };
 
   const onAddOrderItem = (item: OrderItemRequest) => {
-      addOrderItemMutation.mutate(item, {
-        onSuccess: () => {
-          addToOrder();
-          onCloseModal();
-        },
-      });
-    }
+    addOrderItemMutation.mutate(item, {
+      onSuccess: () => {
+        addToOrder();
+        onCloseModal();
+      },
+    });
+  };
 
   return (
     <>
@@ -109,37 +108,40 @@ export const DishRecommendList = (props: Props) => {
         {recommendDishes.map((dish) => (
           <div
             key={dish.dishId}
-            className="bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition-all border border-gray-100 group"
+            className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 hover:scale-[1.02]"
           >
-            <img
-              src={dish.image}
-              alt={dish.name}
-              className="w-full h-32 object-cover rounded-lg mb-3"
-            />
+            {/* Image */}
+            <div className="relative h-48 overflow-hidden bg-gray-100">
+              <img
+                src={dish.image}
+                alt={dish.name}
+                className="w-full h-full object-cover"
+              />
+            </div>
 
-            <p className="font-semibold text-gray-900 mb-1 line-clamp-1">
-              {dish.name}
-            </p>
+            {/* Content */}
+            <div className="p-5">
+              <h3 className="font-bold text-lg text-gray-900 mb-2">
+                {dish.name}
+              </h3>
 
-            <div className="flex items-center justify-between gap-2">
-              <span className="font-bold text-red-500">
-                {formatPrice(dish.basePrice)}
-              </span>
-
-              <Button
-                type="primary"
-                className="bg-red-500 hover:bg-red-600 border-0 rounded-lg flex-1"
-                onClick={() => onOpenModal(dish.dishId)}
-              >
-                Thêm
-              </Button>
+              {/* Price */}
+              <div className="flex items-center justify-between">
+                <span className="text-red-500 font-bold text-lg">
+                  {formatCurrency(dish.basePrice)}
+                </span>
+                <button className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors text-sm font-medium cursor-pointer"
+                  onClick={() => onOpenModal(dish.dishId)}
+                >
+                  Thêm vào
+                </button>
+              </div>
             </div>
           </div>
         ))}
       </div>
 
-
-      <DishDetailDrawer 
+      <DishDetailDrawer
         open={openModal}
         dishId={dishId as string}
         onClose={onCloseModal}
