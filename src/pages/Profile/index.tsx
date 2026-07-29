@@ -1,8 +1,15 @@
 import { useEffect, useState } from "react";
-import { message, notification, Spin } from "antd";
+import { message, notification, Spin, Input, Select, DatePicker, Button } from "antd";
+import {
+  CameraOutlined,
+  UserOutlined,
+  PhoneOutlined,
+  CalendarOutlined,
+} from "@ant-design/icons";
 import { getUserProfileApi, updateProfileApi } from "../../services/user.api";
 import { getApiError } from "../../utils/get-api-error";
 import useAuthStore from "../../stores/useAuthStore";
+import dayjs from "dayjs";
 
 export const ProfilePage = () => {
   const [userId, setUserId] = useState("");
@@ -139,13 +146,24 @@ export const ProfilePage = () => {
     <div className="max-w-4xl mx-auto px-4 py-8">
       <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
         {/* Header */}
-        <div className="bg-gradient-to-r from-pink-400 to-red-500 h-36 relative">
+        <div className="bg-gradient-to-r from-pink-400 to-red-500 h-40 relative">
           <div className="absolute left-1/2 -bottom-14 -translate-x-1/2">
-            <img
-              src={avatarUrl || ""}
-              alt="avatar"
-              className="w-28 h-28 rounded-full border-4 border-white object-cover shadow-lg"
-            />
+            <label className="relative block w-28 h-28 rounded-full cursor-pointer group">
+              <img
+                src={avatarUrl || ""}
+                alt="avatar"
+                className="w-28 h-28 rounded-full border-4 border-white object-cover shadow-lg"
+              />
+              <div className="absolute inset-0 rounded-full bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                <CameraOutlined className="text-white text-2xl" />
+              </div>
+              <input
+                hidden
+                type="file"
+                accept="image/*"
+                onChange={handleChooseAvatar}
+              />
+            </label>
           </div>
         </div>
 
@@ -166,101 +184,83 @@ export const ProfilePage = () => {
                 </span>
               ))}
             </div>
-
-            {/* Upload Avatar */}
-            <div className="mt-4">
-              <label className="cursor-pointer text-red-500 font-medium hover:text-red-600">
-                Thay đổi ảnh đại diện
-                <input
-                  hidden
-                  type="file"
-                  accept="image/*"
-                  onChange={handleChooseAvatar}
-                />
-              </label>
-            </div>
           </div>
 
           <form onSubmit={handleSubmit}>
             <div className="grid md:grid-cols-2 gap-5">
               {/* FullName */}
               <div>
-                <label className="text-sm font-medium text-gray-600">
-                  Họ tên
+                <label className="text-sm font-medium text-gray-600 mb-1 block">
+                  <UserOutlined className="mr-1" /> Họ tên
                 </label>
-
-                <input
+                <Input
+                  size="large"
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
-                  className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-red-400 focus:outline-none"
+                  placeholder="Nhập họ tên"
                 />
               </div>
 
               {/* Phone */}
               <div>
-                <label className="text-sm font-medium text-gray-600">
-                  Số điện thoại
+                <label className="text-sm font-medium text-gray-600 mb-1 block">
+                  <PhoneOutlined className="mr-1" /> Số điện thoại
                 </label>
-
-                <input
+                <Input
+                  size="large"
                   value={phoneNumber}
                   onChange={(e) =>
                     setPhoneNumber(e.target.value.replace(/\D/g, ""))
                   }
-                  className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-red-400 focus:outline-none"
+                  placeholder="Nhập số điện thoại"
                 />
               </div>
 
               {/* Gender */}
               <div>
-                <label className="text-sm font-medium text-gray-600">
+                <label className="text-sm font-medium text-gray-600 mb-1 block">
                   Giới tính
                 </label>
-
-                <select
+                <Select
+                  size="large"
                   value={gender}
-                  onChange={(e) => setGender(Number(e.target.value))}
-                  className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-red-400 focus:outline-none"
-                >
-                  <option value={1}>Nam</option>
-                  <option value={0}>Nữ</option>
-                </select>
+                  onChange={(value) => setGender(value)}
+                  style={{ width: "100%" }}
+                  options={[
+                    { value: 1, label: "Nam" },
+                    { value: 0, label: "Nữ" },
+                  ]}
+                />
               </div>
 
               {/* DOB */}
               <div>
-                <label className="text-sm font-medium text-gray-600">
-                  Ngày sinh
+                <label className="text-sm font-medium text-gray-600 mb-1 block">
+                  <CalendarOutlined className="mr-1" /> Ngày sinh
                 </label>
-
-                <input
-                  type="date"
-                  value={dateOfBirth}
-                  onChange={(e) => setDateOfBirth(e.target.value)}
-                  className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-red-400 focus:outline-none"
+                <DatePicker
+                  size="large"
+                  value={dateOfBirth ? dayjs(dateOfBirth) : null}
+                  onChange={(date) =>
+                    setDateOfBirth(date ? date.format("YYYY-MM-DD") : "")
+                  }
+                  format="DD/MM/YYYY"
+                  style={{ width: "100%" }}
+                  placeholder="Chọn ngày sinh"
                 />
               </div>
             </div>
 
             <div className="mt-8 flex justify-center">
-              <button
-                type="submit"
-                disabled={saving}
-                className="
-                  bg-red-500
-                  hover:bg-red-600
-                  disabled:bg-gray-400
-                  text-white
-                  font-semibold
-                  px-10
-                  py-3
-                  rounded-xl
-                  shadow-md
-                  transition
-                "
+              <Button
+                type="primary"
+                size="large"
+                htmlType="submit"
+                loading={saving}
+                className="px-10"
               >
                 {saving ? "Đang cập nhật..." : "Cập nhật thông tin"}
-              </button>
+              </Button>
             </div>
           </form>
         </div>

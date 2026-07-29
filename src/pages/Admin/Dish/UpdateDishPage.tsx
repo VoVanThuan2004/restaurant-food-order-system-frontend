@@ -122,6 +122,11 @@ export const UpdateDishPage = () => {
   const onFinish = (values: any) => {
     if (!dishId) return;
 
+    if (!fileList.length) {
+      message.error("Vui lòng tải ảnh món ăn");
+      return;
+    }
+
     // Kiểm tra xem có upload ảnh mới hay không
     if (hasNewImageUpload()) {
       const newImageFile = getNewImageFile();
@@ -173,7 +178,7 @@ export const UpdateDishPage = () => {
                 styles={{ body: { padding: "24px" } }}
               >
                 {/* Ảnh món ăn */}
-                <Form.Item label="Ảnh món ăn">
+                <Form.Item label="Ảnh món ăn" required>
                   <Upload
                     listType="picture-card"
                     fileList={fileList}

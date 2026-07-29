@@ -17,7 +17,10 @@ export const getAllDiningTables = async (status: TableStatus) => {
   const res = await http.get<ApiResponse<PageResponse<DiningTableResponse>>>(
     `/dining-tables`,
     {
-      params: queryParams,
+      params: {
+        search: "",
+        ...queryParams,
+      },
     },
   );
   return res.data;
