@@ -11,7 +11,7 @@ export const PublicRoute = () => {
   }
 
   if (isAuthentication && roles.includes("STAFF")) {
-    return <Navigate to={"/staff"} replace />;
+    return <Navigate to={"/dining-tables"} replace />;
   }
 
   if (isAuthentication && roles.includes("CHEF")) {

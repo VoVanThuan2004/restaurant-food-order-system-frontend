@@ -8,7 +8,6 @@ import AdminRoute from "../routes/AdminRoute";
 import NotFoundPage from "../pages/NotFoundPage";
 import { LoginPage } from "../pages/Auth/Login";
 import { StaffRoute } from "./StaffRoute";
-import { DiningTablePage } from "../pages/DiningTable";
 import { CategoryPage } from "../pages/Category";
 import AdminLayout from "../components/layouts/admin/AdminLayout";
 import { CreateDishPage } from "../pages/Admin/Dish/CreateDishPage";
@@ -28,6 +27,7 @@ import { AdminOrderPage } from "../pages/Admin/Order";
 import { DashboardPage } from "../pages/Admin/Dashboard";
 import ProfilePage from "../pages/Profile";
 import { ChangePasswordPage } from "../pages/ChangePassword";
+import { StaffPage } from "../pages/DiningTable/StaffPage";
 
 const router = createBrowserRouter([
   {
@@ -123,7 +123,7 @@ const router = createBrowserRouter([
         children: [
           {
             path: "/dining-tables",
-            element: <DiningTablePage />,
+            element: <StaffPage />,
           },
           {
             path: "/payment-history",
