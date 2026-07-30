@@ -28,7 +28,7 @@ export default function Header() {
                     <div className="w-10 h-10 bg-red-500 rounded-xl flex items-center justify-center">
                         <span className="text-white font-bold text-lg">H</span>
                     </div>
-                    <span className="font-bold text-xl text-gray-900">HaiDiLao</span>
+                    <span className="font-bold text-xl text-gray-900">Dexlure</span>
                 </div>
 
                 {/* Desktop Menu */}

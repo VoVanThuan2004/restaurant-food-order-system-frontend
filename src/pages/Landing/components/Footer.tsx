@@ -12,7 +12,7 @@ export default function Footer() {
                             <div className="w-10 h-10 bg-red-500 rounded-xl flex items-center justify-center">
                                 <span className="text-white font-bold text-lg">H</span>
                             </div>
-                            <span className="font-bold text-xl text-white">HaiDiLao</span>
+                            <span className="font-bold text-xl text-white">Dexlure</span>
                         </div>
                         <p className="text-gray-400 mb-6">
                             Nhà hàng lẩu cao cấp, nơi mang đến trải nghiệm ẩm thực tuyệt vời.
@@ -123,7 +123,7 @@ export default function Footer() {
                 {/* Divider */}
                 <div className="border-t border-gray-700 pt-8">
                     <p className="text-center text-gray-400">
-                        &copy; {new Date().getFullYear()} HaiDiLao Restaurant. Tất cả quyền được bảo lưu.
+                        &copy; {new Date().getFullYear()} Dexlure Restaurant. Tất cả quyền được bảo lưu.
                     </p>
                 </div>
             </div>
