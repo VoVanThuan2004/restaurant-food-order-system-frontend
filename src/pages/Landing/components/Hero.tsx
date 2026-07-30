@@ -1,8 +1,6 @@
-import { useNavigate } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
 
 export default function Hero() {
-    const navigate = useNavigate();
 
     return (
         <section id="home" className="relative w-full min-h-[80vh] bg-gradient-to-br from-gray-900 to-gray-800 overflow-hidden">
@@ -39,13 +37,6 @@ export default function Hero() {
                         >
                             Xem thực đơn
                             <ChevronRight size={20} />
-                        </button>
-
-                        <button
-                            onClick={() => navigate("/login")}
-                            className="px-8 py-3 bg-white text-gray-900 rounded-xl font-semibold hover:bg-gray-100 transition-all duration-300 hover:shadow-lg"
-                        >
-                            Đặt món ngay
                         </button>
                     </div>
                 </div>
