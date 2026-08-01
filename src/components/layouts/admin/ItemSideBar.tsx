@@ -4,6 +4,7 @@ import { getApiError } from "../../../utils/get-api-error";
 import { message } from "antd";
 import { logoutApi } from "../../../services/auth.api";
 import useAuthStore from "../../../stores/useAuthStore";
+import logo from "../../../assets/logo.png";
 
 const ItemSideBar = () => {
   const navigate = useNavigate();
@@ -26,22 +27,13 @@ const ItemSideBar = () => {
   return (
     <div className="p-4 bg-[#0B1220] h-screen w-65 flex flex-col">
       {/* Logo + Tên nhà hàng */}
-      <div className="flex items-center gap-2 mb-7">
-        <svg
-          className="w-6 h-6 text-white"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-          />
-        </svg>
-        <h1 className="text-xl font-bold text-white tracking-tight">ADMIN</h1>
+      <div className="flex items-center gap-2.5 mb-7">
+        <img
+          src={logo}
+          alt="Dexlure Logo"
+          className="h-9 w-auto object-contain bg-white rounded-lg p-1 shadow-md"
+        />
+        <h1 className="text-xl font-bold text-white tracking-tight">Dexlure</h1>
       </div>
 
       <div className="flex flex-col gap-4">

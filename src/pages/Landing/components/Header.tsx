@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react";
+import logo from "../../../assets/logo.png";
 
 export default function Header() {
     const navigate = useNavigate();
@@ -24,11 +25,18 @@ export default function Header() {
         <header className="sticky top-0 z-50 bg-white shadow-sm">
             <nav className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
                 {/* Logo */}
-                <div className="flex items-center gap-2">
-                    <div className="w-10 h-10 bg-red-500 rounded-xl flex items-center justify-center">
-                        <span className="text-white font-bold text-lg">H</span>
-                    </div>
-                    <span className="font-bold text-xl text-gray-900">Dexlure</span>
+                <div
+                    className="flex items-center gap-2.5 cursor-pointer"
+                    onClick={() => scrollToSection("#home")}
+                >
+                    <img
+                        src={logo}
+                        alt="Dexlure Logo"
+                        className="h-10 w-auto object-contain drop-shadow-sm transition-transform duration-300 hover:scale-105"
+                    />
+                    <span className="font-bold text-2xl text-gray-900 tracking-tight">
+                        Dexlure
+                    </span>
                 </div>
 
                 {/* Desktop Menu */}

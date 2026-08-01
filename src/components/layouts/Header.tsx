@@ -5,6 +5,7 @@ import { Avatar, message, Popover } from "antd";
 import useAuthStore from "../../stores/useAuthStore";
 import { logoutApi } from "../../services/auth.api";
 import { getApiError } from "../../utils/get-api-error";
+import logo from "../../assets/logo.png";
 
 const Header = () => {
   const [showMenu, setShowMenu] = useState(false);
@@ -49,23 +50,14 @@ const Header = () => {
     <header className="bg-red-500 shadow-md py-6 w-full top-0 left-0 sticky px-4 z-100">
       <div className="flex justify-between items-center">
         {/* Title */}
-        <div className="flex items-center gap-2">
-          <svg
-            className="w-8 h-8 text-white"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
-          </svg>
+        <div className="flex items-center gap-3">
+          <img
+            src={logo}
+            alt="Dexlure Logo"
+            className="h-12 w-auto object-contain bg-white rounded-lg p-1.5 shadow-md"
+          />
           <h1 className="text-2xl font-bold text-white tracking-tight">
-            Hadilao Restaurant
+            Dexlure
           </h1>
         </div>
 
