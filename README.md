@@ -1,73 +1,84 @@
-# React + TypeScript + Vite
+# Restaurant Food System - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Hệ thống quản lý nhà hàng thức ăn (Frontend), xây dựng bằng React + TypeScript + Vite.
 
-Currently, two official plugins are available:
+## Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Framework:** React 19 + TypeScript
+- **Build Tool:** Vite 7
+- **Styling:** Tailwind CSS 4
+- **UI Library:** Ant Design 6
+- **State Management:** Zustand + React Query (TanStack Query)
+- **Routing:** React Router DOM 7
+- **Form Handling:** React Hook Form + Zod
+- **HTTP Client:** Axios
+- **Real-time:** STOMP (WebSocket) + Socket.IO
 
-## React Compiler
+## Cài đặt
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```bash
+# Clone repository
+git clone <repo-url>
+cd my-project
 
-## Expanding the ESLint configuration
+# Cài dependencies
+npm install
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+# Chạy development server
+npm run dev
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+# Build production
+npm run build
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+# Preview production build
+npm run preview
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# Lint
+npm run lint
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Cấu trúc thư mục
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
 ```
+src/
+├── app/                # App configuration
+├── assets/             # Static assets (images, icons)
+├── components/         # Shared components
+│   └── layouts/        # Layout components (Admin, Staff, Chef, Auth, Main)
+├── hooks/              # Custom hooks
+├── pages/              # Page components
+│   ├── Admin/          # Admin pages (Dashboard, Dish, User, Order, DiningTable, Category)
+│   ├── Auth/           # Authentication pages (Login)
+│   ├── Chef/           # Chef pages (Dish, Order)
+│   ├── Staff/          # Staff pages (Dish, Order)
+│   ├── Landing/        # Landing page
+│   ├── Profile/        # User profile
+│   ├── ChangePassword/ # Change password
+│   └── DiningTable/    # Dining table management
+├── routes/             # Route definitions & guards
+├── services/           # API service layer
+├── stores/             # Zustand stores
+├── types/              # TypeScript type definitions
+└── utils/              # Utility functions
+```
+
+## Routes
+
+| Route | Role | Mô tả |
+|-------|------|-------|
+| `/` | Public | Landing page |
+| `/login` | Public | Đăng nhập |
+| `/admin/dashboard` | Admin | Dashboard tổng quan |
+| `/admin/dish` | Admin | Quản lý món ăn |
+| `/admin/category` | Admin | Quản lý danh mục |
+| `/admin/user` | Admin | Quản lý người dùng |
+| `/admin/order` | Admin | Quản lý đơn hàng |
+| `/admin/dining-table` | Admin | Quản lý bàn ăn |
+| `/dining-tables` | Staff | Xem trạng thái bàn |
+| `/orders/:orderId/dish` | Staff | Gọi món |
+| `/orders/:orderId/cart` | Staff | Giỏ hàng |
+| `/payment-history` | Staff | Lịch sử thanh toán |
+| `/chef/dish` | Chef | Danh sách món ăn |
+| `/chef/order` | Chef | Quản lý đơn hàng bếp |
+| `/profile` | All | Hồ sơ cá nhân |
+| `/change-password` | All | Đổi mật khẩu |
