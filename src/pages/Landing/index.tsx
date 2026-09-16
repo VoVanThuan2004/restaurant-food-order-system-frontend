@@ -8,6 +8,7 @@ import Reviews from "./components/Reviews";
 import Promotions from "./components/Promotions";
 import CTA from "./components/CTA";
 import Footer from "./components/Footer";
+import BackToTop from "../../components/BackToTop";
 
 export const LandingPage = () => {
   return (
@@ -22,6 +23,8 @@ export const LandingPage = () => {
       <Promotions />
       <CTA />
       <Footer />
+
+      <BackToTop />
     </div>
   );
 };
