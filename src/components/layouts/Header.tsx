@@ -1,7 +1,7 @@
-import { Link, NavLink, useNavigate } from "react-router-dom";
-import { Menu } from "lucide-react";
 import { useState } from "react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { Avatar, message, Popover } from "antd";
+import { LogOut, Menu, X } from "lucide-react";
 import useAuthStore from "../../stores/useAuthStore";
 import { logoutApi } from "../../services/auth.api";
 import { getApiError } from "../../utils/get-api-error";
@@ -10,154 +10,87 @@ import logo from "../../assets/logo.png";
 const Header = () => {
   const [showMenu, setShowMenu] = useState(false);
   const navigate = useNavigate();
+  const user = useAuthStore((state) => state.user);
   const clearSession = useAuthStore((state) => state.clearSession);
 
-  // logout
   const onLogout = async () => {
     try {
       const res = await logoutApi();
-
-      if (res.status === "success") {
-        navigate("/");
-      }
+      if (res.status === "success") navigate("/");
     } catch (error) {
-      const apiError = getApiError(error);
-      message.error(apiError.message);
+      message.error(getApiError(error).message);
     } finally {
       clearSession();
+      setShowMenu(false);
     }
   };
 
-  const content = (
-    <div className="flex flex-col w-48 py-2">
-      <button
-        className="w-full text-left px-4 py-2 rounded-md hover:bg-gray-100 transition-colors cursor-pointer"
-        onClick={() => navigate("/profile")}
-      >
-        Xem profile
-      </button>
+  const getInitials = (name?: string) =>
+    name?.trim().split(/\s+/).filter(Boolean).map((part) => part[0]).join("").toUpperCase().slice(0, 2) || "U";
 
-      <button
-        className="w-full text-left px-4 py-2 rounded-md hover:bg-gray-100 transition-colors cursor-pointer"
-        onClick={() => navigate("change-password")}
-      >
-        Thay đổi mật khẩu
+  const navClass = ({ isActive }: { isActive: boolean }) =>
+    `rounded-lg px-4 py-2 text-md font-medium transition-colors ${isActive ? "bg-white text-red-600" : "text-white hover:bg-white/15"}`;
+
+  const accountMenu = (
+    <div className="flex w-48 flex-col py-1">
+      <button className="rounded-md px-3 py-2 text-left text-sm hover:bg-gray-100" onClick={() => navigate("/profile")}>Xem profile</button>
+      <button className="rounded-md px-3 py-2 text-left text-sm hover:bg-gray-100" onClick={() => navigate("/change-password")}>Thay đổi mật khẩu</button>
+      <button className="flex items-center gap-2 rounded-md px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50" onClick={onLogout}>
+        <LogOut size={16} /> Đăng xuất
       </button>
     </div>
   );
 
   return (
-    <header className="bg-red-500 shadow-md py-6 w-full top-0 left-0 sticky px-4 z-100">
-      <div className="flex justify-between items-center">
-        {/* Title */}
-        <div className="flex items-center gap-3">
-          <img
-            src={logo}
-            alt="Dexlure Logo"
-            className="h-12 w-auto object-contain bg-white rounded-lg p-1.5 shadow-md"
-          />
-          <h1 className="text-2xl font-bold text-white tracking-tight">
-            Dexlure
-          </h1>
-        </div>
+    <header className="sticky top-0 z-50 w-full bg-red-600 shadow-md py-3">
+      <div className="mx-auto flex max-w-screen-2xl items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:px-8">
+        <Link to="/dining-tables" className="flex min-w-0 items-center gap-2.5" aria-label="Dexlure - Trang chủ">
+          <img src={logo} alt="" className="h-10 w-10 shrink-0 rounded-lg bg-white p-1 object-contain shadow-sm sm:h-11 sm:w-11" />
+          <span className="truncate text-xl font-bold tracking-tight text-white sm:text-2xl">Dexlure</span>
+        </Link>
 
-        {/* Nav điều hướng */}
-        <nav className="hidden md:flex items-center gap-6 lg:gap-12">
-          {/* Trang chủ */}
-          <NavLink
-            to="/dining-tables"
-            className={({ isActive }) =>
-              [
-                "px-4 py-2.5 rounded-lg transition font-medium",
-                isActive ? "bg-white text-red-500" : "text-white",
-              ].join(" ")
-            }
-          >
-            Trang chủ
-          </NavLink>
-
-          {/* Tra cứu hóa đơn */}
-          <NavLink
-            to="/payment-history"
-            className={({ isActive }) =>
-              [
-                "px-4 py-2.5 rounded-lg transition font-medium",
-                isActive ? "bg-white text-red-500" : "text-white",
-              ].join(" ")
-            }
-          >
-            Tra cứu hóa đơn
-          </NavLink>
+        <nav className="hidden items-center gap-5 md:flex">
+          <NavLink to="/dining-tables" className={navClass}>Trang chủ</NavLink>
+          <NavLink to="/payment-history" className={navClass}>Tra cứu hóa đơn</NavLink>
         </nav>
 
-        <Popover placement="bottomRight" content={content}>
-          <Avatar className="cursor-pointer">U</Avatar>
-        </Popover>
-
-        {/* Menu khi màn hình nhỏ */}
-        <button
-          className="md:hidden cursor-pointer"
-          onClick={() => setShowMenu(!showMenu)}
-        >
-          <Menu color="white" />
-        </button>
-
-        <button
-          className="hidden md:flex px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-all duration-200 flex items-center space-x-1 cursor-pointer"
-          onClick={onLogout}
-        >
-          <span>Đăng xuất</span>
-          <svg
-            className="w-4 h-4"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
+        <div className="flex shrink-0 items-center gap-2">
+          {user && (
+            <Popover placement="bottomRight" content={accountMenu} trigger="click">
+              <button className="flex cursor-pointer items-center gap-2 rounded-full p-1 text-white transition hover:bg-white/15" aria-label="Mở menu tài khoản">
+                <Avatar src={user.avatarUrl || undefined} size={36} className="border border-white/60 bg-red-700 font-semibold">
+                  {!user.avatarUrl && getInitials(user.fullName)}
+                </Avatar>
+                <span className="hidden max-w-36 truncate text-sm font-medium lg:block">{user.fullName}</span>
+              </button>
+            </Popover>
+          )}
+          <button
+            type="button"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-lg text-white transition hover:bg-white/15 md:hidden"
+            onClick={() => setShowMenu((open) => !open)}
+            aria-label={showMenu ? "Đóng menu" : "Mở menu"}
+            aria-expanded={showMenu}
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-            />
-          </svg>
-        </button>
+            {showMenu ? <X size={23} /> : <Menu size={23} />}
+          </button>
+        </div>
       </div>
 
       {showMenu && (
-        <div className="md:hidden bg-red-500 border-t border-white mt-6">
-          <div className="flex flex-col items-center gap-3 mt-6">
-            <Link to="/" className="text-white hover:text-gray-200">
-              Trang chủ
-            </Link>
-            <Link
-              to="/payment-history"
-              className="text-white hover:text-gray-200"
-            >
-              Tra cứu hóa đơn
-            </Link>
-
-            {/* Logout */}
-            <button
-              className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-all duration-200 flex items-center space-x-2 cursor-pointer"
-              onClick={onLogout}
-            >
-              <span>Đăng xuất</span>
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-                />
-              </svg>
-            </button>
-          </div>
-        </div>
+        <nav className="flex flex-col gap-1 border-t border-white/20 px-4 py-3 md:hidden">
+          <NavLink to="/dining-tables" className={navClass} onClick={() => setShowMenu(false)}>Trang chủ</NavLink>
+          <NavLink to="/payment-history" className={navClass} onClick={() => setShowMenu(false)}>Tra cứu hóa đơn</NavLink>
+          {user && (
+            <>
+              <Link to="/profile" className="rounded-lg px-3 py-2 text-sm font-medium text-white hover:bg-white/15" onClick={() => setShowMenu(false)}>Xem profile</Link>
+              <Link to="/change-password" className="rounded-lg px-3 py-2 text-sm font-medium text-white hover:bg-white/15" onClick={() => setShowMenu(false)}>Thay đổi mật khẩu</Link>
+              <button onClick={onLogout} className="mt-1 flex items-center gap-2 rounded-lg px-3 py-2 text-left text-sm font-medium text-white hover:bg-white/15">
+                <LogOut size={16} /> Đăng xuất
+              </button>
+            </>
+          )}
+        </nav>
       )}
     </header>
   );
