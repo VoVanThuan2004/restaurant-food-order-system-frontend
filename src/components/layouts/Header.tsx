@@ -42,7 +42,7 @@ const Header = () => {
   );
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-red-600 shadow-md py-3">
+    <header className="sticky top-0 z-50 w-full bg-red-500 shadow-md py-3">
       <div className="mx-auto flex max-w-screen-2xl items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:px-8">
         <Link to="/dining-tables" className="flex min-w-0 items-center gap-2.5" aria-label="Dexlure - Trang chủ">
           <img src={logo} alt="" className="h-10 w-10 shrink-0 rounded-lg bg-white p-1 object-contain shadow-sm sm:h-11 sm:w-11" />
