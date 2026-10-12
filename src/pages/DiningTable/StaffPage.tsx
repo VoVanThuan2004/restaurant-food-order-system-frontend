@@ -11,19 +11,19 @@ export const StaffPage = () => {
   const userId = useAuthStore((state) => state.user?.userId);
   const [status, setStatus] = useState<TableStatus>(null);
   
-    // gọi api fetch danh sách diningtables
+    // Lấy danh sách bàn theo trạng thái đang chọn.
     const { data, isLoading, isError } = useDiningTable(status);
     const tables = data?.data?.content || [];
   
     useDiningTableSocket();
   
     return (
-      <div className="mt-8 px-5">
+      <div className="mx-auto mt-6 w-full max-w-screen-2xl px-4 sm:mt-8 sm:px-6">
         <TableStatusFilter status={status} setStatus={setStatus} />
   
         {isError && (
           <div className="flex justify-center items-center">
-            <p className="text-red">Không thể lấy dữ liệu bàn ăn</p>
+            <p className="text-red-600">Không thể tải danh sách bàn ăn. Vui lòng thử lại.</p>
           </div>
         )}
   
@@ -45,6 +45,12 @@ export const StaffPage = () => {
             />
           ))}
         </div>
+        {!isLoading && !isError && tables.length === 0 && (
+          <div className="mt-8 rounded-xl border border-dashed border-gray-300 bg-white px-4 py-10 text-center">
+            <p className="font-medium text-gray-700">Không tìm thấy bàn phù hợp</p>
+            <p className="mt-1 text-sm text-gray-500">Thử chọn trạng thái khác để xem danh sách bàn.</p>
+          </div>
+        )}
       </div>
     );
 };

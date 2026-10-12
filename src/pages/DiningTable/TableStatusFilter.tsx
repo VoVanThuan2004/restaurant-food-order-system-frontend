@@ -8,9 +8,9 @@ const TableStatusFilter = ({
   setStatus: React.Dispatch<React.SetStateAction<TableStatus>>;
 }) => {
   const tableStatus = [
-    { label: "All", value: null },
-    { label: "Available", value: true },
-    { label: "Occupied", value: false },
+    { label: "Tất cả", value: null },
+    { label: "Còn trống", value: true },
+    { label: "Đang phục vụ", value: false },
   ];
 
   return (
@@ -40,13 +40,13 @@ const TableStatusFilter = ({
         {/* Available */}
         <div className="flex items-center gap-2 text-sm text-gray-600">
           <span className="inline-block w-3 h-3 rounded-full bg-green-500" />
-          <span>Available</span>
+          <span>Còn trống</span>
         </div>
 
         {/* Occupied */}
         <div className="flex items-center gap-2 text-sm text-gray-600">
           <span className="inline-block w-3 h-3 rounded-full bg-red-500" />
-          <span>Occupied</span>
+          <span>Đang phục vụ</span>
         </div>
       </div>
     </div>

@@ -50,8 +50,8 @@ const TableCard = ({
       const apiError = getApiError(error);
 
       notification.error({
-        title: "Lỗi khi tạo bàn cho khách",
-        description: apiError.message || "Lỗi hệ thống",
+        title: status ? "Không thể mở bàn" : "Không thể xem đơn hàng",
+        description: apiError.message || "Đã xảy ra lỗi hệ thống. Vui lòng thử lại.",
         placement: "topRight",
       });
     }
@@ -68,7 +68,7 @@ const TableCard = ({
       `}
     >
       <div className="flex items-center justify-between">
-        {/* Table name & status */}
+        {/* Tên bàn và trạng thái */}
         <p className="text-xl font-bold">{name}</p>
         <div
           className={`px-2 py-1 rounded-2xl border ${status ? "border-green-400 bg-green-50" : "border-red-400 bg-red-100"}`}
@@ -76,17 +76,17 @@ const TableCard = ({
           <p
             className={`text-[13px] font-semibold ${status ? "text-green-600" : "text-red-600"}`}
           >
-            {status ? "Available" : "Occupied"}
+            {status ? "Còn trống" : "Đang phục vụ"}
           </p>
         </div>
       </div>
 
       <div className="flex items-center gap-2">
         <Users size={16} color="gray" />
-        <p className="text-gray-500">{capacity} SEATS</p>
+        <p className="text-gray-500">{capacity} chỗ ngồi</p>
       </div>
 
-      {/* Button */}
+      {/* Thao tác với bàn */}
       <div className="flex items-center justify-center">
         <ButtonComponent
           type="button"
@@ -107,7 +107,7 @@ const TableCard = ({
             <p
               className={`${status ? "text-[#00DD00]" : "text-[#FF0033]"} font-medium`}
             >
-              {status ? " Assign table" : "View detail"}
+              {status ? "Phục vụ bàn" : "Xem đơn hàng"}
             </p>
             <ChevronRight
               size={15}
@@ -118,8 +118,8 @@ const TableCard = ({
       </div>
 
       <Modal
-        title="Xác nhận tạo bàn"
-        closable={{ "aria-label": "Custom Close Button" }}
+        title={status ? "Bắt đầu phục vụ bàn" : "Xem đơn hàng của bàn"}
+        closable={{ "aria-label": "Đóng hộp thoại" }}
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
@@ -128,7 +128,7 @@ const TableCard = ({
             Hủy
           </Button>,
           <Button key="submit" type="primary" onClick={handleOk}>
-            Xác nhận
+            {status ? "Bắt đầu phục vụ" : "Xem đơn hàng"}
           </Button>,
         ]}
       ></Modal>
