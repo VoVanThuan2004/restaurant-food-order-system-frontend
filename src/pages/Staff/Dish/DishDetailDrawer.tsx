@@ -141,27 +141,38 @@ export const DishDetailDrawer: React.FC<DishDetailDrawerProps> = ({
       title={null}
       open={open}
       onClose={onClose}
+      placement="right"
       width={520}
       closable={false}
-      destroyOnClose
-      bodyStyle={{ padding: 0 }}
+      destroyOnHidden
       className="dish-detail-drawer"
+      styles={{
+        wrapper: { width: "100%", maxWidth: 520 },
+        body: {
+          padding: 0,
+          display: "flex",
+          flexDirection: "column",
+          height: "100%",
+          overflow: "hidden",
+        },
+      }}
     >
       {loading ? (
-        <div className="flex justify-center items-center h-96">
+        <div className="flex min-h-[50vh] flex-1 items-center justify-center">
           <Spin size="large" />
         </div>
       ) : dish ? (
-        <div className="flex flex-col h-full">
+        <div className="flex h-full min-h-0 flex-col">
           {/* Header Section - Image + Info */}
-          <div className="border-b border-gray-100 p-6 flex gap-4">
+          <div className="relative shrink-0 border-b border-gray-100 p-4 sm:p-6">
             {/* Close Button */}
             <button
               onClick={onClose}
-              className="absolute top-4 right-4 w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-all z-10"
+              aria-label="Đóng"
+              className="absolute top-3 right-3 z-20 flex h-9 w-9 items-center justify-center rounded-full bg-gray-100 transition-all hover:bg-gray-200 sm:top-4 sm:right-4 sm:h-10 sm:w-10"
             >
               <svg
-                className="w-6 h-6"
+                className="h-5 w-5 sm:h-6 sm:w-6"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -175,46 +186,67 @@ export const DishDetailDrawer: React.FC<DishDetailDrawerProps> = ({
               </svg>
             </button>
 
-            {/* Image */}
-            <div className="flex-shrink-0">
-              <Image
-                src={dish.image}
-                alt={dish.name}
-                className="w-28 h-28 object-cover rounded-lg"
-                preview={false}
-                fallback="/placeholder-dish.jpg"
-              />
-            </div>
+            <div className="flex items-start gap-3 pr-10 sm:gap-5 sm:pr-0">
+              {/* Image */}
+              <div className="h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-gray-100 sm:h-28 sm:w-28">
+                <Image
+                  src={dish.image}
+                  alt={dish.name}
+                  classNames={{
+                    root: "!h-full !w-full",
+                    image: "!h-full !w-full object-cover",
+                  }}
+                  preview={false}
+                  fallback="/placeholder-dish.jpg"
+                />
+              </div>
 
-            {/* Info */}
-            <div className="flex-1 flex flex-col justify-between">
-              <div>
-                <Title level={3} className="mb-1">
+              {/* Info */}
+              <div className="min-w-0 flex-1">
+                <Title
+                  level={3}
+                  className="!mb-2 !text-lg leading-snug break-words text-gray-900 sm:!text-2xl"
+                >
                   {dish.name}
                 </Title>
-                <div className="flex items-center gap-2">
-                  <p className="text-xl font-bold text-red-500">
-                    {calculateTotalPrice().toLocaleString("vi-VN")} ₫
-                  </p>
+                <div className="flex flex-wrap items-center gap-2">
+                  <span
+                    className={`rounded-full px-2 py-0.5 text-xs font-medium ${
+                      dish.status
+                        ? "bg-green-100 text-green-700"
+                        : "bg-red-100 text-red-700"
+                    }`}
+                  >
+                    {dish.status ? "Đang bán" : "Tạm hết"}
+                  </span>
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-xs text-gray-500">Tạm tính</span>
+                    <p className="text-lg font-bold text-red-500 sm:text-xl">
+                      {calculateTotalPrice().toLocaleString("vi-VN")} ₫
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Scrollable Content Area */}
-          <div className="flex-1 overflow-y-auto">
-            <div className="p-6 space-y-6">
+          <div className="min-h-0 flex-1 overflow-y-auto">
+            <div className="space-y-5 p-4 sm:space-y-6 sm:p-6">
               {/* Variants/Options Section */}
               {dish.variants && dish.variants.length > 0 && (
-                <div className="space-y-6">
-                  <Title level={4} className="text-gray-900 mb-4">
+                <div className="space-y-4 sm:space-y-6">
+                  <Title level={4} className="!mb-4 text-gray-900">
                     Tùy chọn thêm
                   </Title>
 
                   {dish.variants.map((group) => (
                     <div key={group.groupId} className="space-y-3">
-                      <div className="flex items-center gap-2">
-                        <Title level={5} className="mb-0 text-gray-800">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <Title
+                          level={5}
+                          className="!mb-0 !text-base text-gray-800 sm:!text-lg"
+                        >
                           {group.groupName}
                         </Title>
                         {group.required && (
@@ -246,7 +278,7 @@ export const DishDetailDrawer: React.FC<DishDetailDrawerProps> = ({
                                   group.multiple,
                                 )
                               }
-                              className={`flex items-center gap-3 p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 ${
+                              className={`flex cursor-pointer items-center gap-2 rounded-lg border-2 p-3 transition-all duration-200 sm:gap-3 sm:p-4 ${
                                 isSelected
                                   ? "border-blue-500 bg-blue-50/50"
                                   : "border-gray-200 bg-gray-50/30 hover:border-gray-300 hover:bg-gray-50"
@@ -262,15 +294,15 @@ export const DishDetailDrawer: React.FC<DishDetailDrawerProps> = ({
                               </div>
 
                               {/* Option Details */}
-                              <div className="flex-1 min-w-0">
-                                <Text className="font-medium text-gray-900 block">
+                              <div className="min-w-0 flex-1">
+                                <Text className="block font-medium break-words text-gray-900">
                                   {option.optionName}
                                 </Text>
                               </div>
 
                               {/* Price Adjustment */}
                               <Text
-                                className={`font-semibold flex-shrink-0 ${
+                                className={`shrink-0 whitespace-nowrap text-sm font-semibold sm:text-base ${
                                   option.priceAdjustment > 0
                                     ? "text-green-600"
                                     : option.priceAdjustment < 0
@@ -294,7 +326,7 @@ export const DishDetailDrawer: React.FC<DishDetailDrawerProps> = ({
               )}
 
               {/* Quantity & Notes Section */}
-              <div className="space-y-4 border-t border-gray-100 pt-6">
+              <div className="space-y-4 border-t border-gray-100 pt-5 sm:pt-6">
                 {/* Quantity Selector */}
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
@@ -306,12 +338,12 @@ export const DishDetailDrawer: React.FC<DishDetailDrawerProps> = ({
                   <div className="flex items-center gap-3">
                     <button
                       onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                      className="group relative w-12 h-12 rounded-xl bg-gray-50 hover:bg-white hover:shadow-sm border border-gray-200 hover:border-gray-300 flex items-center justify-center transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="group relative flex h-10 w-10 items-center justify-center rounded-xl border border-gray-200 bg-gray-50 transition-all duration-200 hover:border-gray-300 hover:bg-white hover:shadow-sm active:scale-95 disabled:cursor-not-allowed disabled:opacity-50 sm:h-12 sm:w-12"
                       aria-label="Decrease quantity"
                     >
                       <Minus
                         size={18}
-                        className="text-gray-500 group-hover:text-gray-700 transition-colors"
+                        className="text-gray-500 transition-colors group-hover:text-gray-700"
                       />
                     </button>
 
@@ -330,7 +362,7 @@ export const DishDetailDrawer: React.FC<DishDetailDrawerProps> = ({
                           setQuantity(1);
                         }
                       }}
-                      className="flex-1 h-12 px-3 text-center text-lg font-medium bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
+                      className="h-10 min-w-0 flex-1 rounded-xl border border-gray-200 bg-gray-50 px-3 text-center text-base font-medium transition-all focus:border-blue-400 focus:ring-2 focus:ring-blue-100 focus:outline-none sm:h-12 sm:text-lg"
                     />
 
                     <button
@@ -338,12 +370,12 @@ export const DishDetailDrawer: React.FC<DishDetailDrawerProps> = ({
                         if (quantity >= 50) return;
                         setQuantity(quantity + 1);
                       }}
-                      className="group relative w-12 h-12 rounded-xl bg-gray-50 hover:bg-white hover:shadow-sm border border-gray-200 hover:border-gray-300 flex items-center justify-center transition-all duration-200 active:scale-95"
+                      className="group relative flex h-10 w-10 items-center justify-center rounded-xl border border-gray-200 bg-gray-50 transition-all duration-200 hover:border-gray-300 hover:bg-white hover:shadow-sm active:scale-95 sm:h-12 sm:w-12"
                       aria-label="Increase quantity"
                     >
                       <Plus
                         size={18}
-                        className="text-gray-500 group-hover:text-gray-700 transition-colors"
+                        className="text-gray-500 transition-colors group-hover:text-gray-700"
                       />
                     </button>
                   </div>
@@ -351,7 +383,7 @@ export const DishDetailDrawer: React.FC<DishDetailDrawerProps> = ({
 
                 {/* Notes/Special Instructions */}
                 <div>
-                  <div className="flex items-center gap-2 mb-3">
+                  <div className="mb-2 flex items-center gap-2 sm:mb-3">
                     <NotebookPen size={16} className="text-gray-600" />
                     <label className="text-sm font-semibold text-gray-700">
                       Ghi chú (không bắt buộc)
@@ -360,40 +392,49 @@ export const DishDetailDrawer: React.FC<DishDetailDrawerProps> = ({
                   <textarea
                     value={notes}
                     onChange={(e) => setNotes(e.target.value)}
+                    maxLength={200}
                     placeholder="Ví dụ: Không muốn đường, thêm ớt, v.v..."
-                    className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200 transition-all duration-200 resize-none font-medium text-gray-700 placeholder-gray-400"
+                    className="w-full resize-none rounded-lg border-2 border-gray-200 px-4 py-3 text-sm font-medium text-gray-700 transition-all duration-200 placeholder-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 focus:outline-none sm:text-base"
                     rows={3}
                   />
-                  <p className="text-xs text-gray-500 mt-1">
+                  <p className="mt-1 text-xs text-gray-500">
                     Tối đa 200 ký tự ({notes.length}/200)
                   </p>
                 </div>
               </div>
-              <div className="pt-4">
-                <Button
-                  type="primary"
-                  size="large"
-                  block
-                  onClick={() =>
-                    handleAddToOrder({
-                      orderId: orderId as string,
-                      dishId: dish.dishId,
-                      quantity,
-                      notes,
-                      variants: Object.values(selectedOptions)
-                        .flat()
-                        .map((optionId) => ({ optionId })),
-                    })
-                  }
-                  disabled={!isValidSelection()}
-                  className="h-14 text-base font-semibold rounded-lg"
-                  icon={<ShoppingCart size={18} />}
-                >
-                  Thêm vào giỏ hàng -{" "}
-                  {(calculateTotalPrice() * quantity).toLocaleString("vi-VN")} ₫
-                </Button>
-              </div>
             </div>
+          </div>
+
+          {/* Footer - Add to cart */}
+          <div className="shrink-0 border-t border-gray-100 bg-white p-4 sm:p-6">
+            <Button
+              type="primary"
+              size="large"
+              block
+              onClick={() =>
+                handleAddToOrder({
+                  orderId: orderId as string,
+                  dishId: dish.dishId,
+                  quantity,
+                  notes,
+                  variants: Object.values(selectedOptions)
+                    .flat()
+                    .map((optionId) => ({ optionId })),
+                })
+              }
+              disabled={!isValidSelection()}
+              className="!h-12 rounded-lg text-sm font-semibold sm:!h-14 sm:text-base"
+              icon={<ShoppingCart size={18} />}
+            >
+              <span className="whitespace-nowrap sm:hidden">
+                Thêm -{" "}
+                {(calculateTotalPrice() * quantity).toLocaleString("vi-VN")} ₫
+              </span>
+              <span className="hidden whitespace-nowrap sm:inline">
+                Thêm vào giỏ hàng -{" "}
+                {(calculateTotalPrice() * quantity).toLocaleString("vi-VN")} ₫
+              </span>
+            </Button>
           </div>
         </div>
       ) : null}
