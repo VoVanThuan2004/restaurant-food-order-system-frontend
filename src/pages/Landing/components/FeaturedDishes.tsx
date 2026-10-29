@@ -2,15 +2,25 @@ import { useState } from "react";
 import { useDishes } from "../../../hooks/dish/useDishes";
 import type { DishResponse } from "../../../types/dish.type";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
+import useAuthStore from "../../../stores/useAuthStore";
+import { useNavigate } from "react-router-dom";
+import { Button, notification } from "antd";
+import { DishDetailDrawer } from "../../Staff/Dish/DishDetailDrawer";
 
 export default function FeaturedDishes() {
   const [currentPage, setCurrentPage] = useState(0);
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useDishes({ size: 6 });
+  const [isOpen, setIsOpen] = useState(false);
+  const [dishId, setDishId] = useState("");
 
   const currentPageData = data?.pages[currentPage]?.data;
   const dishes = currentPageData?.content || [];
   const totalPages = data?.pages[0]?.data?.totalPages || 0;
+
+  // Lấy trạng thái đăng nhập hiện tại
+  const isAuthentication = useAuthStore((state) => state.isAuthentication);
+  const navigate = useNavigate();
 
   const handleNext = () => {
     const nextPage = currentPage + 1;
@@ -24,6 +34,45 @@ export default function FeaturedDishes() {
   const handlePrev = () => {
     if (currentPage > 0) setCurrentPage(currentPage - 1);
   };
+
+  const handleViewDetail = (dish: DishResponse) => {
+    // Kiểm tra đã đăng nhập chưa
+    if (!isAuthentication) {
+      notification.warning({
+        key: "login-required",
+        title: "Chưa đăng nhập",
+        description: "Vui lòng đăng nhập để xem chi tiết món ăn.",
+        placement: "topRight",
+        actions: (
+          <Button
+            type="primary"
+            size="small"
+            onClick={() => {
+              notification.destroy("login-required");
+              navigate("/login");
+            }}
+          >
+            Đăng nhập
+          </Button>
+        ),
+      });
+      return;
+    }
+    // window.alert(
+    //   `${dish.name}\nGiá: ${dish.basePrice.toLocaleString("vi-VN")}₫\nTrạng thái: ${
+    //     dish.status ? "Đang bán" : "Tạm hết"
+    //   }`,
+    // );
+
+    setIsOpen(true);
+    setDishId(dish.dishId);
+    console.log("Dish detail: ", dish);
+  };
+
+  const onCloseViewDetail = () => {
+    setIsOpen(false);
+    setDishId("");
+  }
 
   return (
     <section id="menu" className="py-16 md:py-24 bg-white">
@@ -55,8 +104,14 @@ export default function FeaturedDishes() {
               {dishes.map((dish: DishResponse) => (
                 <div
                   key={dish.dishId}
-                  className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 hover:scale-[1.02] flex flex-col"
+                  className={`relative bg-white rounded-2xl overflow-hidden shadow-md transition-all duration-300 flex flex-col ${
+                    dish.status ? "hover:shadow-lg hover:scale-[1.02]" : ""
+                  }`}
                 >
+                  {!dish.status && (
+                    <div className="absolute inset-0 z-10 bg-gray-500/30 pointer-events-none" />
+                  )}
+
                   {/* Image */}
                   <div className="relative h-48 shrink-0 overflow-hidden bg-gray-100">
                     <img
@@ -65,7 +120,7 @@ export default function FeaturedDishes() {
                       className="w-full h-full object-cover"
                     />
                     <span
-                      className={`absolute top-3 right-3 px-2 py-0.5 rounded-full text-xs font-medium ${
+                      className={`absolute top-3 right-3 z-20 px-2 py-0.5 rounded-full text-xs font-medium ${
                         dish.status
                           ? "bg-green-100 text-green-700"
                           : "bg-red-100 text-red-700"
@@ -84,6 +139,13 @@ export default function FeaturedDishes() {
                       <span className="text-red-500 font-bold text-xl">
                         {dish.basePrice.toLocaleString("vi-VN")}₫
                       </span>
+                      <button
+                        onClick={() => handleViewDetail(dish)}
+                        disabled={!dish.status}
+                        className="w-full mt-3 px-4 py-2 bg-red-500 text-white rounded-lg font-medium hover:bg-red-600 transition-colors duration-300 cursor-pointer disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed disabled:hover:bg-gray-300"
+                      >
+                        Xem chi tiết
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -108,9 +170,7 @@ export default function FeaturedDishes() {
 
                 <button
                   onClick={handleNext}
-                  disabled={
-                    currentPage >= totalPages - 1 || isFetchingNextPage
-                  }
+                  disabled={currentPage >= totalPages - 1 || isFetchingNextPage}
                   className="flex items-center gap-1 px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                 >
                   {isFetchingNextPage ? (
@@ -125,6 +185,14 @@ export default function FeaturedDishes() {
           </>
         )}
       </div>
+
+      {/* Hiển thị drawer chi tiết món ăn */}
+      <DishDetailDrawer
+        open={isOpen}
+        dishId={dishId}
+        onClose={onCloseViewDetail}
+        onAddToOrder={() => console.log("Đã thêm món ăn vào giỏ hàng")}
+      />
     </section>
   );
 }
