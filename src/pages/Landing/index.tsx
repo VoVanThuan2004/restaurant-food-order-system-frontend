@@ -1,7 +1,6 @@
 import Header from "./components/Header";
 import Hero from "./components/Hero";
 import FeaturedDishes from "./components/FeaturedDishes";
-import Categories from "./components/Categories";
 import About from "./components/About";
 import WhyChooseUs from "./components/WhyChooseUs";
 import Reviews from "./components/Reviews";
@@ -16,7 +15,6 @@ export const LandingPage = () => {
       <Header />
       <Hero />
       <FeaturedDishes />
-      <Categories />
       <About />
       <WhyChooseUs />
       <Reviews />
