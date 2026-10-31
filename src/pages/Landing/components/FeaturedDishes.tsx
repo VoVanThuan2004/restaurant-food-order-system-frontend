@@ -1,26 +1,29 @@
 import { useState } from "react";
 import { useDishes } from "../../../hooks/dish/useDishes";
+import { useCategories } from "../../../hooks/category/useCategories";
 import type { DishResponse } from "../../../types/dish.type";
+import type { CategoryResponse } from "../../../types/category.type";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
-import useAuthStore from "../../../stores/useAuthStore";
-import { useNavigate } from "react-router-dom";
-import { Button, notification } from "antd";
 import { DishDetailDrawer } from "../../Staff/Dish/DishDetailDrawer";
 
 export default function FeaturedDishes() {
   const [currentPage, setCurrentPage] = useState(0);
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(
+    null,
+  );
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
-    useDishes({ size: 6 });
+    useDishes({
+      size: 6,
+      categoryId: selectedCategoryId ?? undefined,
+    });
+  const { data: categoryData, isLoading: isCategoriesLoading } = useCategories();
+  const categories = categoryData?.data || [];
   const [isOpen, setIsOpen] = useState(false);
   const [dishId, setDishId] = useState("");
 
   const currentPageData = data?.pages[currentPage]?.data;
   const dishes = currentPageData?.content || [];
   const totalPages = data?.pages[0]?.data?.totalPages || 0;
-
-  // Lấy trạng thái đăng nhập hiện tại
-  const isAuthentication = useAuthStore((state) => state.isAuthentication);
-  const navigate = useNavigate();
 
   const handleNext = () => {
     const nextPage = currentPage + 1;
@@ -35,34 +38,42 @@ export default function FeaturedDishes() {
     if (currentPage > 0) setCurrentPage(currentPage - 1);
   };
 
+  const handleCategoryChange = (categoryId: string | null) => {
+    setSelectedCategoryId(categoryId);
+    setCurrentPage(0);
+  };
+
+  const getCategoryButtonClass = (isActive: boolean) =>
+    [
+      "rounded-full border px-4 py-2 text-sm font-medium transition-all duration-300 sm:px-5",
+      isActive
+        ? "border-red-500 bg-red-500 text-white shadow-md shadow-red-100"
+        : "border-gray-200 bg-white text-gray-700 hover:border-red-300 hover:bg-red-50 hover:text-red-500",
+    ].join(" ");
+
   const handleViewDetail = (dish: DishResponse) => {
     // Kiểm tra đã đăng nhập chưa
-    if (!isAuthentication) {
-      notification.warning({
-        key: "login-required",
-        title: "Chưa đăng nhập",
-        description: "Vui lòng đăng nhập để xem chi tiết món ăn.",
-        placement: "topRight",
-        actions: (
-          <Button
-            type="primary"
-            size="small"
-            onClick={() => {
-              notification.destroy("login-required");
-              navigate("/login");
-            }}
-          >
-            Đăng nhập
-          </Button>
-        ),
-      });
-      return;
-    }
-    // window.alert(
-    //   `${dish.name}\nGiá: ${dish.basePrice.toLocaleString("vi-VN")}₫\nTrạng thái: ${
-    //     dish.status ? "Đang bán" : "Tạm hết"
-    //   }`,
-    // );
+    // if (!isAuthentication) {
+    //   notification.warning({
+    //     key: "login-required",
+    //     title: "Chưa đăng nhập",
+    //     description: "Vui lòng đăng nhập để xem chi tiết món ăn.",
+    //     placement: "topRight",
+    //     actions: (
+    //       <Button
+    //         type="primary"
+    //         size="small"
+    //         onClick={() => {
+    //           notification.destroy("login-required");
+    //           navigate("/login");
+    //         }}
+    //       >
+    //         Đăng nhập
+    //       </Button>
+    //     ),
+    //   });
+    //   return;
+    // }
 
     setIsOpen(true);
     setDishId(dish.dishId);
@@ -88,6 +99,39 @@ export default function FeaturedDishes() {
           </p>
         </div>
 
+        {/* Category Filter */}
+        <div className="mb-8 flex flex-wrap justify-center gap-2 md:mb-10 md:gap-3">
+          <button
+            type="button"
+            aria-pressed={selectedCategoryId === null}
+            onClick={() => handleCategoryChange(null)}
+            className={getCategoryButtonClass(selectedCategoryId === null)}
+          >
+            Tất cả
+          </button>
+
+          {isCategoriesLoading
+            ? Array.from({ length: 3 }).map((_, index) => (
+                <div
+                  key={`category-skeleton-${index}`}
+                  className="h-9 w-24 animate-pulse rounded-full bg-gray-100"
+                />
+              ))
+            : categories.map((category: CategoryResponse) => (
+                <button
+                  key={category.categoryId}
+                  type="button"
+                  aria-pressed={selectedCategoryId === category.categoryId}
+                  onClick={() => handleCategoryChange(category.categoryId)}
+                  className={getCategoryButtonClass(
+                    selectedCategoryId === category.categoryId,
+                  )}
+                >
+                  {category.categoryName}
+                </button>
+              ))}
+        </div>
+
         {/* Loading */}
         {isLoading ? (
           <div className="flex justify-center py-20">
@@ -95,7 +139,9 @@ export default function FeaturedDishes() {
           </div>
         ) : dishes.length === 0 ? (
           <div className="text-center py-20 text-gray-500">
-            Chưa có món ăn nào
+            {selectedCategoryId
+              ? "Chưa có món ăn trong danh mục này"
+              : "Chưa có món ăn nào"}
           </div>
         ) : (
           <>
