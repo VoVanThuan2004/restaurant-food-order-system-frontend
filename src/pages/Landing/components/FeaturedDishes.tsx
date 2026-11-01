@@ -5,6 +5,8 @@ import type { DishResponse } from "../../../types/dish.type";
 import type { CategoryResponse } from "../../../types/category.type";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { DishDetailDrawer } from "../../Staff/Dish/DishDetailDrawer";
+import DishCardSkeleton from "./DishCardSkeleton";
+
 
 export default function FeaturedDishes() {
   const [currentPage, setCurrentPage] = useState(0);
@@ -134,8 +136,13 @@ export default function FeaturedDishes() {
 
         {/* Loading */}
         {isLoading ? (
-          <div className="flex justify-center py-20">
-            <div className="w-10 h-10 border-4 border-red-500 border-t-transparent rounded-full animate-spin" />
+          <div>
+            <span className="sr-only">Đang tải danh sách món ăn</span>
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {Array.from({ length: 6 }).map((_, index) => (
+                <DishCardSkeleton key={`dish-skeleton-${index}`} />
+              ))}
+            </div>
           </div>
         ) : dishes.length === 0 ? (
           <div className="text-center py-20 text-gray-500">
