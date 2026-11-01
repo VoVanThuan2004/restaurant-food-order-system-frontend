@@ -17,6 +17,13 @@ http.interceptors.request.use((config) => {
   return config;
 });
 
+const publicAuthEndpoints = [
+  "/auth/login",
+  "/auth/register",
+  "/auth/verify-email",
+  "/auth/resend-verification",
+];
+
 let isRefreshing = false;
 let failedQueue: FailedRequest[] = [];
 
@@ -37,6 +44,10 @@ http.interceptors.response.use(
 
   async (error) => {
     const originalRequest = error.config;
+    const requestUrl = originalRequest?.url ?? "";
+    const isPublicAuthRequest = publicAuthEndpoints.some((endpoint) =>
+      requestUrl.includes(endpoint),
+    );
 
     // =========================
     // NETWORK ERROR
@@ -49,7 +60,11 @@ http.interceptors.response.use(
     // =========================
     // 401 - REFRESH TOKEN
     // =========================
-    if (error.response.status === 401 && !originalRequest._retry) {
+    if (
+      error.response.status === 401 &&
+      !originalRequest._retry &&
+      !isPublicAuthRequest
+    ) {
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
           failedQueue.push({ resolve, reject });
