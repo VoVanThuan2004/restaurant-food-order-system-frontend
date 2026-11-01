@@ -15,39 +15,27 @@ export const useLogin = () => {
   const login = async (payload: LoginRequest) => {
     setLoading(true);
     setError(null);
+    setLoginSuccessData(undefined);
+
     try {
-      // gọi api login
       const res = await loginApi(payload);
 
       if (res.status !== "success" || !res.data) {
-        throw new Error(res.message || "Login failed");
+        const errorMessage = res.message || "Đăng nhập thất bại";
+        setError(errorMessage);
+        message.error(errorMessage);
+        return;
       }
 
-      // api trả về thành công
       setSession(res.data);
-
-      // Điều hướng theo role
-      // const roles = res.data.roles;
-      // console.log("roles: ", roles);
-      
-      // if (roles.includes("ADMIN")) {
-      //   navigate("/admin", { replace: true });
-      // }
-
-      // if (roles.includes("CHEF")) {
-      //   navigate("/chef", { replace: true });
-      // }
-
-      // if (roles.includes("STAFF")) {
-      //   navigate("/dining-tables", { replace: true });
-      // }
-      
-
       setLoginSuccessData(res.data);
     } catch (error: unknown) {
       const apiError = getApiError(error);
+      const errorMessage =
+        apiError.message || "Email hoặc mật khẩu không chính xác";
 
-      message.error(apiError.message ?? "Email hoặc mật khẩu không hợp lệ");
+      setError(errorMessage);
+      message.error(errorMessage);
       return;
     } finally {
       setLoading(false);

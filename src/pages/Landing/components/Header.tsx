@@ -61,6 +61,7 @@ export default function Header() {
     if (roles.includes("ADMIN")) return "quản trị";
     else if (roles.includes("CHEF")) return "đầu bếp";
     else if (roles.includes("STAFF")) return "nhân viên";
+    else if (roles.includes("CUSTOMER")) return "khách hàng";
   }
 
   const getNavigateRole = (roles: string[] | undefined) => {
@@ -69,6 +70,7 @@ export default function Header() {
     if (roles.includes("ADMIN")) return "/admin";
     else if (roles.includes("CHEF")) return "/chef";
     else if (roles.includes("STAFF")) return "/dining-tables";
+    else if (roles.includes("CUSTOMER")) return "/";
   }
 
   const content = (
@@ -121,12 +123,18 @@ export default function Header() {
         </div>
 
         {isAuthentication === false ? (
-          <div className="hidden md:block">
+          <div className="hidden md:flex items-center gap-3">
             <button
               onClick={() => navigate("/login")}
               className="px-6 py-2 bg-red-500 text-white rounded-xl hover:bg-red-600 transition-all duration-300 font-medium cursor-pointer"
             >
               Đăng nhập
+            </button>
+            <button
+              onClick={() => navigate("/register")}
+              className="px-6 py-2 border border-red-500 text-red-500 rounded-xl hover:bg-red-50 transition-all duration-300 font-medium cursor-pointer"
+            >
+              Đăng ký
             </button>
           </div>
         ) : (
@@ -178,12 +186,28 @@ export default function Header() {
               {item.label}
             </button>
           ))}
-          <button
-            onClick={() => navigate("/login")}
-            className="w-full px-4 py-2 bg-red-500 text-white rounded-xl hover:bg-red-600 transition-all font-medium"
-          >
-            Đăng nhập
-          </button>
+          {isAuthentication === false && (
+            <div className="space-y-2 pt-1">
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  navigate("/login");
+                }}
+                className="w-full px-4 py-2 bg-red-500 text-white rounded-xl hover:bg-red-600 transition-all font-medium"
+              >
+                Đăng nhập
+              </button>
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  navigate("/register");
+                }}
+                className="w-full px-4 py-2 border border-red-500 text-red-500 rounded-xl hover:bg-red-50 transition-all font-medium"
+              >
+                Đăng ký
+              </button>
+            </div>
+          )}
         </div>
       )}
     </header>

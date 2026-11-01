@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import {  Eye, EyeOff } from "lucide-react";
+import { AlertCircle, Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
@@ -28,8 +28,14 @@ const LoginForm = ({ onSubmit, loading, error }: LoginFormProps) => {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
-  } = useForm({ resolver: zodResolver(loginSchema) });
+  } = useForm<LoginRequest>({ resolver: zodResolver(loginSchema) });
+
+  const emailValue = watch("email");
+  const normalizedEmail = emailValue?.trim().toLowerCase() ?? "";
+  const isUnverifiedError =
+    !!error && error.toLowerCase().includes("chưa xác thực email");
 
   return (
     <div className="flex flex-col max-w-md w-full mx-auto shadow-2xl rounded-xl bg-white py-8 px-8">
@@ -90,7 +96,24 @@ const LoginForm = ({ onSubmit, loading, error }: LoginFormProps) => {
         </div>
 
         {/* error  */}
-        {error && <p className="text-red-500 text-[14px]">{error}</p>}
+        {error && (
+          <div className="mb-4 flex flex-col gap-2 rounded-lg border border-red-200 bg-red-50 px-3 py-3 text-[14px] text-red-600">
+            <div className="flex items-start gap-2">
+              <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
+              <span>{error}</span>
+            </div>
+
+            {isUnverifiedError && (
+              <Link
+                to="/verify-email"
+                state={{ email: normalizedEmail }}
+                className="w-fit font-semibold underline hover:text-red-700"
+              >
+                Gửi lại email xác thực
+              </Link>
+            )}
+          </div>
+        )}
 
         {/* Recovery password */}
         <div className="flex justify-end mb-4">
@@ -121,8 +144,17 @@ const LoginForm = ({ onSubmit, loading, error }: LoginFormProps) => {
         </Button>
       </form>
 
-      {/* Nút quay trở về trang chủ */}
+      <p className="mt-4 text-center text-[14px] text-gray-600">
+        Chưa có tài khoản?{" "}
+        <Link
+          to="/register"
+          className="font-semibold text-red-500 hover:text-red-600"
+        >
+          Đăng ký
+        </Link>
+      </p>
 
+      {/* Nút quay trở về trang chủ */}
       <div className="flex items-center justify-center mt-3 cursor-pointer">
         {/* <ArrowLeft size={17} color="red" /> */}
         <p className="text-red-500 text-[16px] font-semibold underline"

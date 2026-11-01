@@ -24,6 +24,10 @@ export const LoginPage = () => {
     if (roles.includes("STAFF")) {
       navigate("/dining-tables", { replace: true });
     }
+
+    if (roles.includes("CUSTOMER")) {
+      navigate("/", { replace: true });
+    }
   }, [roles, navigate]);
 
   const onSubmit = async (data: LoginRequest) => {
