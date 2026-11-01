@@ -7,6 +7,8 @@ import { PublicRoute } from "../routes/PublicRoute";
 import AdminRoute from "../routes/AdminRoute";
 import NotFoundPage from "../pages/NotFoundPage";
 import { LoginPage } from "../pages/Auth/Login";
+import { RegisterPage } from "../pages/Auth/Register";
+import { VerifyEmailPage } from "../pages/Auth/VerifyEmail";
 import { StaffRoute } from "./StaffRoute";
 import { CategoryPage } from "../pages/Category";
 import AdminLayout from "../components/layouts/admin/AdminLayout";
@@ -44,10 +46,14 @@ const router = createBrowserRouter([
             path: "/login",
             element: <LoginPage />,
           },
-          // {
-          //   path: "/register",
-          //   element: <RegisterPage />,
-          // },
+          {
+            path: "/register",
+            element: <RegisterPage />,
+          },
+          {
+            path: "/verify-email",
+            element: <VerifyEmailPage />,
+          },
           // {
           //   path: "/recovery-password",
           //   element: <RecoveryPassword />,
