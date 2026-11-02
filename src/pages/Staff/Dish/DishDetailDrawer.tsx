@@ -4,7 +4,6 @@ import {
   Image,
   Typography,
   Button,
-  Spin,
   message,
   Checkbox,
   Radio,
@@ -15,6 +14,7 @@ import { getDishDetailApi } from "../../../services/dish.api";
 import { getApiError } from "../../../utils/get-api-error";
 import type { OrderItemRequest } from "../../../types/order.type";
 import { useParams } from "react-router-dom";
+import Spinner from "../../../components/Spinner";
 
 const { Title, Text } = Typography;
 
@@ -159,7 +159,7 @@ export const DishDetailDrawer: React.FC<DishDetailDrawerProps> = ({
     >
       {loading ? (
         <div className="flex min-h-[50vh] flex-1 items-center justify-center">
-          <Spin size="large" />
+          <Spinner color="#fb2c36" />
         </div>
       ) : dish ? (
         <div className="flex h-full min-h-0 flex-col">
@@ -423,7 +423,7 @@ export const DishDetailDrawer: React.FC<DishDetailDrawerProps> = ({
                 })
               }
               disabled={!isValidSelection()}
-              className="!h-12 rounded-lg text-sm font-semibold sm:!h-14 sm:text-base"
+              className="!h-12 !bg-red-500 rounded-lg text-sm font-semibold sm:!h-14 sm:text-base"
               icon={<ShoppingCart size={18} />}
             >
               <span className="whitespace-nowrap sm:hidden">
