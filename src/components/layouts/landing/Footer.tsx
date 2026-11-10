@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Facebook, Instagram, Twitter, Phone, Mail, MapPin } from "lucide-react";
 
 export default function Footer() {
@@ -60,36 +61,36 @@ export default function Footer() {
                         <h3 className="font-bold text-white mb-4 text-lg">Menu nhanh</h3>
                         <ul className="space-y-3">
                             <li>
-                                <a
-                                    href="#home"
+                                <Link
+                                    to="/#home"
                                     className="text-gray-400 hover:text-red-500 transition-colors"
                                 >
                                     Trang chủ
-                                </a>
+                                </Link>
                             </li>
                             <li>
-                                <a
-                                    href="#menu"
+                                <Link
+                                    to="/#menu"
                                     className="text-gray-400 hover:text-red-500 transition-colors"
                                 >
                                     Thực đơn
-                                </a>
+                                </Link>
                             </li>
                             <li>
-                                <a
-                                    href="#about"
+                                <Link
+                                    to="/#about"
                                     className="text-gray-400 hover:text-red-500 transition-colors"
                                 >
                                     Về chúng tôi
-                                </a>
+                                </Link>
                             </li>
                             <li>
-                                <a
-                                    href="#promotions"
+                                <Link
+                                    to="/#promotions"
                                     className="text-gray-400 hover:text-red-500 transition-colors"
                                 >
                                     Khuyến mãi
-                                </a>
+                                </Link>
                             </li>
                         </ul>
                     </div>

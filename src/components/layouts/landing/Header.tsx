@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import logo from "../../../assets/logo.png";
 import { logoutApi } from "../../../services/auth.api";
@@ -9,10 +9,12 @@ import { message, Popover } from "antd";
 
 export default function Header() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const clearSession = useAuthStore((state) => state.clearSession);
   const isAuthentication = useAuthStore((state) => state.isAuthentication);
   const user = useAuthStore((state) => state.user);
+  const isCustomer = user?.roles.includes("CUSTOMER") ?? false;
 
   const menuItems = [
     { label: "Trang chủ", href: "#home" },
@@ -22,10 +24,29 @@ export default function Header() {
     { label: "Liên hệ", href: "#contact" },
   ];
 
+  const isLandingPage = location.pathname === "/";
+
   const scrollToSection = (href: string) => {
+    setMobileMenuOpen(false);
+
+    if (!isLandingPage) {
+      navigate(`/${href}`);
+      return;
+    }
+
     const element = document.querySelector(href);
     element?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const goHome = () => {
     setMobileMenuOpen(false);
+
+    if (!isLandingPage) {
+      navigate("/");
+      return;
+    }
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   // logout
@@ -41,6 +62,7 @@ export default function Header() {
       message.error(apiError.message);
     } finally {
       clearSession();
+      setMobileMenuOpen(false);
     }
   };
 
@@ -82,6 +104,23 @@ export default function Header() {
         Trang {getRoleName(user?.roles as string[])}
       </button>
 
+      {isCustomer && (
+        <>
+          <button
+            className="w-full text-left px-4 py-2 rounded-md hover:bg-gray-100 transition-colors cursor-pointer"
+            onClick={() => navigate("/customer/profile")}
+          >
+            Hồ sơ
+          </button>
+          <button
+            className="w-full text-left px-4 py-2 rounded-md hover:bg-gray-100 transition-colors cursor-pointer"
+            onClick={() => navigate("/customer/change-password")}
+          >
+            Đổi mật khẩu
+          </button>
+        </>
+      )}
+
       <button
         className="w-full text-left px-4 py-2 rounded-md hover:bg-gray-100 transition-colors cursor-pointer"
         onClick={() => onLogout()}
@@ -97,7 +136,7 @@ export default function Header() {
         {/* Logo */}
         <div
           className="flex items-center gap-2.5 cursor-pointer"
-          onClick={() => scrollToSection("#home")}
+          onClick={goHome}
         >
           <img
             src={logo}
@@ -205,6 +244,35 @@ export default function Header() {
                 className="w-full px-4 py-2 border border-red-500 text-red-500 rounded-xl hover:bg-red-50 transition-all font-medium"
               >
                 Đăng ký
+              </button>
+            </div>
+          )}
+
+          {isAuthentication && isCustomer && (
+            <div className="space-y-2 pt-1">
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  navigate("/customer/profile");
+                }}
+                className="block w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
+              >
+                Hồ sơ
+              </button>
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  navigate("/customer/change-password");
+                }}
+                className="block w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
+              >
+                Đổi mật khẩu
+              </button>
+              <button
+                onClick={onLogout}
+                className="w-full px-4 py-2 text-left text-red-600 hover:bg-red-50 rounded-lg transition-colors font-medium"
+              >
+                Đăng xuất
               </button>
             </div>
           )}
