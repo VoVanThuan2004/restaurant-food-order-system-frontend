@@ -44,12 +44,13 @@ src/
 ├── app/                # App configuration
 ├── assets/             # Static assets (images, icons)
 ├── components/         # Shared components
-│   └── layouts/        # Layout components (Admin, Staff, Chef, Auth, Main)
+│   └── layouts/        # Layout components (Admin, Customer, Landing, Staff, Chef, Auth, Main)
 ├── hooks/              # Custom hooks
 ├── pages/              # Page components
 │   ├── Admin/          # Admin pages (Dashboard, Dish, User, Order, DiningTable, Category)
 │   ├── Auth/           # Authentication pages (Login)
 │   ├── Chef/           # Chef pages (Dish, Order)
+│   ├── Customer/       # Customer pages (Profile, ChangePassword)
 │   ├── Staff/          # Staff pages (Dish, Order)
 │   ├── Landing/        # Landing page
 │   ├── Profile/        # User profile
@@ -61,6 +62,8 @@ src/
 ├── types/              # TypeScript type definitions
 └── utils/              # Utility functions
 ```
+
+> Customer Layout sử dụng lại Header và Footer của Landing Page.
 
 ## Routes
 
@@ -80,5 +83,7 @@ src/
 | `/payment-history` | Staff | Lịch sử thanh toán |
 | `/chef/dish` | Chef | Danh sách món ăn |
 | `/chef/order` | Chef | Quản lý đơn hàng bếp |
+| `/customer/profile` | Customer | Hồ sơ cá nhân |
+| `/customer/change-password` | Customer | Đổi mật khẩu |
 | `/profile` | All | Hồ sơ cá nhân |
 | `/change-password` | All | Đổi mật khẩu |
