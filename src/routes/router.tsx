@@ -24,6 +24,10 @@ import { StaffOrderPage } from "../pages/Staff/Order";
 import { UserPage } from "../pages/Admin/User";
 import { AdminDiningTablePage } from "../pages/Admin/DiningTable";
 import { ChefRoute } from "./ChefRoute";
+import { CustomerRoute } from "./CustomerRoute";
+import CustomerLayout from "../components/layouts/customer/CustomerLayout";
+import { CustomerProfilePage } from "../pages/Customer/Profile";
+import { CustomerChangePasswordPage } from "../pages/Customer/ChangePassword";
 import { CartPage } from "../pages/Staff/Dish/CartPage";
 import { AdminOrderPage } from "../pages/Admin/Order";
 import { DashboardPage } from "../pages/Admin/Dashboard";
@@ -193,6 +197,29 @@ const router = createBrowserRouter([
             path: "change-password",
             element: <ChangePasswordPage />
           }
+        ],
+      },
+    ],
+  },
+
+  {
+    element: <CustomerRoute />,
+    children: [
+      {
+        path: "/customer",
+        element: <Navigate to="/" replace />,
+      },
+      {
+        element: <CustomerLayout />,
+        children: [
+          {
+            path: "/customer/profile",
+            element: <CustomerProfilePage />,
+          },
+          {
+            path: "/customer/change-password",
+            element: <CustomerChangePasswordPage />,
+          },
         ],
       },
     ],
