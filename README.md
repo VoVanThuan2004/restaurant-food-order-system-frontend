@@ -70,6 +70,7 @@ src/
 | Route | Role | Mô tả |
 |-------|------|-------|
 | `/` | Public | Landing page |
+| `/order` | Public | Quét QR đặt món (demo) |
 | `/login` | Public | Đăng nhập |
 | `/admin/dashboard` | Admin | Dashboard tổng quan |
 | `/admin/dish` | Admin | Quản lý món ăn |
@@ -87,3 +88,5 @@ src/
 | `/customer/change-password` | Customer | Đổi mật khẩu |
 | `/profile` | All | Hồ sơ cá nhân |
 | `/change-password` | All | Đổi mật khẩu |
+
+> Trang `/order` dùng camera để quét QR, cần chạy trên `localhost` hoặc HTTPS. Có thể tải ảnh QR thay thế nếu camera không khả dụng.
