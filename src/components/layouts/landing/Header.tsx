@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Menu, QrCode, X } from "lucide-react";
 import logo from "../../../assets/logo.png";
 import { logoutApi } from "../../../services/auth.api";
 import { getApiError } from "../../../utils/get-api-error";
@@ -159,6 +159,16 @@ export default function Header() {
               {item.label}
             </button>
           ))}
+          <button
+            onClick={() => {
+              setMobileMenuOpen(false);
+              navigate("/order");
+            }}
+            className="flex items-center gap-1.5 font-semibold text-red-500 transition-colors duration-300 hover:text-red-600"
+          >
+            <QrCode size={18} />
+            Đặt món bằng QR
+          </button>
         </div>
 
         {isAuthentication === false ? (
@@ -225,6 +235,16 @@ export default function Header() {
               {item.label}
             </button>
           ))}
+          <button
+            onClick={() => {
+              setMobileMenuOpen(false);
+              navigate("/order");
+            }}
+            className="flex w-full items-center gap-2 rounded-lg px-4 py-2 text-left font-semibold text-red-500 transition-colors hover:bg-red-50"
+          >
+            <QrCode size={18} />
+            Đặt món bằng QR
+          </button>
           {isAuthentication === false && (
             <div className="space-y-2 pt-1">
               <button

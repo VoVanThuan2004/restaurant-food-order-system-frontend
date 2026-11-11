@@ -34,6 +34,7 @@ import { DashboardPage } from "../pages/Admin/Dashboard";
 import ProfilePage from "../pages/Profile";
 import { ChangePasswordPage } from "../pages/ChangePassword";
 import { StaffPage } from "../pages/DiningTable/StaffPage";
+import { ScanOrderPage } from "../pages/Order/ScanOrderPage";
 
 const router = createBrowserRouter([
   {
@@ -228,6 +229,11 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <LandingPage />,
+  },
+
+  {
+    path: "/order",
+    element: <ScanOrderPage />,
   },
 
   {
