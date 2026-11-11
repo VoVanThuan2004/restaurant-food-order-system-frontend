@@ -13,6 +13,7 @@ import DiningTableCard from "./DiningTableCard";
 import { useUpdatePosition } from "../../../hooks/DiningTable/useUpdatePosition";
 import { AddDiningTableModal } from "./AddDiningTableModal";
 import { UpdateDiningTableModal } from "./UpdateDiningTableModal";
+import { QrCodeModal } from "./QrCodeModal";
 
 export const AdminDiningTablePage = () => {
   // Hook lấy danh sách bàn ăn
@@ -30,8 +31,10 @@ export const AdminDiningTablePage = () => {
   // Modal states
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const [isQrModalOpen, setIsQrModalOpen] = useState(false);
   const [selectedTable, setSelectedTable] =
     useState<DiningTableResponse | null>(null);
+  const [qrTable, setQrTable] = useState<DiningTableResponse | null>(null);
 
   useEffect(() => {
     setTables(diningTables);
@@ -146,6 +149,10 @@ export const AdminDiningTablePage = () => {
                         setSelectedTable(table);
                         setIsUpdateModalOpen(true);
                       }}
+                      onShowQr={(table) => {
+                        setQrTable(table);
+                        setIsQrModalOpen(true);
+                      }}
                     />
                   </div>
                 </div>
@@ -219,6 +226,11 @@ export const AdminDiningTablePage = () => {
           setSelectedTable(null);
         }}
         diningTable={selectedTable}
+      />
+      <QrCodeModal
+        open={isQrModalOpen}
+        onClose={() => setIsQrModalOpen(false)}
+        diningTable={qrTable}
       />
     </div>
   );

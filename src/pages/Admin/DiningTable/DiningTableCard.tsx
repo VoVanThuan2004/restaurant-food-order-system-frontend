@@ -1,6 +1,13 @@
 // components/DiningTableCard.tsx
 
-import { Users, MoreVertical, Edit2, Trash2, GripVertical } from "lucide-react";
+import {
+  Users,
+  MoreVertical,
+  Edit2,
+  Trash2,
+  GripVertical,
+  QrCode,
+} from "lucide-react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import type { DiningTableResponse } from "../../../types/dining-table.type";
@@ -9,9 +16,10 @@ import { useState } from "react";
 type Props = {
   table: DiningTableResponse;
   onEdit?: (table: DiningTableResponse) => void;
+  onShowQr?: (table: DiningTableResponse) => void;
 };
 
-const DiningTableCard = ({ table, onEdit }: Props) => {
+const DiningTableCard = ({ table, onEdit, onShowQr }: Props) => {
   const [showMenu, setShowMenu] = useState(false);
   const {
     attributes,
@@ -91,64 +99,96 @@ const DiningTableCard = ({ table, onEdit }: Props) => {
         </div>
 
         {/* ACTION MENU */}
-        <div className="shrink-0 relative">
+        <div className="flex shrink-0 items-start gap-1">
           <button
-            onClick={() => setShowMenu(!showMenu)}
+            onClick={() => onShowQr?.(table)}
             className="
-              p-2 rounded-lg text-gray-400 hover:text-gray-600
-              hover:bg-gray-100 transition-all
-              opacity-0 group-hover:opacity-100
-              focus:opacity-100 focus:outline-none focus:bg-gray-100
+              p-2 rounded-lg text-blue-500 hover:text-blue-600
+              hover:bg-blue-50 transition-all
             "
-            title="Tùy chọn"
+            title="Quản lý mã QR"
           >
-            <MoreVertical size={18} />
+            <QrCode size={18} />
           </button>
 
-          {/* DROPDOWN MENU */}
-          {showMenu && (
-            <div
+          <div className="relative">
+            <button
+              onClick={() => setShowMenu(!showMenu)}
               className="
-                absolute right-0 top-full mt-1 z-20
-                bg-white rounded-lg shadow-lg border border-gray-200
-                overflow-hidden
+                p-2 rounded-lg text-gray-400 hover:text-gray-600
+                hover:bg-gray-100 transition-all
+                opacity-0 group-hover:opacity-100
+                focus:opacity-100 focus:outline-none focus:bg-gray-100
               "
-              onMouseLeave={() => setShowMenu(false)}
-              role="menu"
+              title="Tùy chọn"
             >
-              <button
-                onClick={() => {
-                  setShowMenu(false);
-                  onEdit?.(table);
-                }}
-                className="
-                  w-full px-4 py-2.5 text-sm font-medium
-                  text-gray-700 hover:bg-blue-50
-                  flex items-center gap-2
-                  transition-colors
-                "
-                role="menuitem"
-              >
-                <Edit2 size={16} />
-                Chỉnh sửa
-              </button>
+              <MoreVertical size={18} />
+            </button>
 
-              <div className="border-t border-gray-100"></div>
-
-              <button
+            {/* DROPDOWN MENU */}
+            {showMenu && (
+              <div
                 className="
-                  w-full px-4 py-2.5 text-sm font-medium
-                  text-red-600 hover:bg-red-50
-                  flex items-center gap-2
-                  transition-colors
+                  absolute right-0 top-full mt-1 z-20
+                  bg-white rounded-lg shadow-lg border border-gray-200
+                  overflow-hidden
                 "
-                role="menuitem"
+                onMouseLeave={() => setShowMenu(false)}
+                role="menu"
               >
-                <Trash2 size={16} />
-                Xóa
-              </button>
-            </div>
-          )}
+                <button
+                  onClick={() => {
+                    setShowMenu(false);
+                    onShowQr?.(table);
+                  }}
+                  className="
+                    w-full px-4 py-2.5 text-sm font-medium
+                    text-gray-700 hover:bg-blue-50
+                    flex items-center gap-2
+                    transition-colors
+                  "
+                  role="menuitem"
+                >
+                  <QrCode size={16} />
+                  Mã QR
+                </button>
+
+                <div className="border-t border-gray-100"></div>
+
+                <button
+                  onClick={() => {
+                    setShowMenu(false);
+                    onEdit?.(table);
+                  }}
+                  className="
+                    w-full px-4 py-2.5 text-sm font-medium
+                    text-gray-700 hover:bg-blue-50
+                    flex items-center gap-2
+                    transition-colors
+                  "
+                  role="menuitem"
+                >
+                  <Edit2 size={16} />
+                  Chỉnh sửa
+                </button>
+
+                <div className="border-t border-gray-100"></div>
+
+                <button
+                  className="
+                    w-full px-4 py-2.5 text-sm font-medium
+                    text-red-600 hover:bg-red-50
+                    flex items-center gap-2
+                    transition-colors
+                  "
+                  role="menuitem"
+                >
+                  <Trash2 size={16} />
+                  Xóa
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
